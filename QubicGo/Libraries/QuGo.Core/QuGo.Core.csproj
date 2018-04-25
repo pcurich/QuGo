@@ -202,8 +202,29 @@
     <Compile Include="Data\DataSettingsManager.cs" />
     <Compile Include="Data\IDataProvider.cs" />
     <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Domain\Applications\Application.cs" />
+    <Compile Include="Domain\Applications\IApplicationMappingSupported.cs" />
+    <Compile Include="Domain\Applications\ApplicationExtensions.cs" />
+    <Compile Include="Domain\Applications\ApplicationMapping.cs" />
     <Compile Include="Domain\Common\CommonSettings.cs" />
     <Compile Include="Domain\Common\FulltextSearchMode.cs" />
+    <Compile Include="Domain\Users\User.cs" />
+    <Compile Include="Domain\Users\UserAttribute.cs" />
+    <Compile Include="Domain\Users\UserAttributeValue.cs" />
+    <Compile Include="Domain\Users\UserExtensions.cs" />
+    <Compile Include="Domain\Users\UserLoginResults.cs" />
+    <Compile Include="Domain\Users\UserNameFormat.cs" />
+    <Compile Include="Domain\Users\UserPassword.cs" />
+    <Compile Include="Domain\Users\UserRole.cs" />
+    <Compile Include="Domain\Users\UserSettings.cs" />
+    <Compile Include="Domain\Users\Events.cs" />
+    <Compile Include="Domain\Users\ExternalAuthenticationRecord.cs" />
+    <Compile Include="Domain\Users\ExternalAuthenticationSettings.cs" />
+    <Compile Include="Domain\Users\PasswordFormat.cs" />
+    <Compile Include="Domain\Users\SystemUserAttributeNames.cs" />
+    <Compile Include="Domain\Users\SystemUserNames.cs" />
+    <Compile Include="Domain\Users\SystemUserRoleNames.cs" />
+    <Compile Include="Domain\Users\UserRegistrationType.cs" />
     <Compile Include="Events\EntityDeleted.cs" />
     <Compile Include="Events\EntityInserted.cs" />
     <Compile Include="Events\EntityUpdated.cs" />
@@ -244,6 +265,12 @@
     <Compile Include="ISysContext.cs" />
     <Compile Include="IWebHelper.cs" />
     <Compile Include="IWorkContext.cs" />
+    <Compile Include="Domain\Localization\ILocalizedEntity.cs" />
+    <Compile Include="Domain\Localization\ILocalizedEnum.cs" />
+    <Compile Include="Domain\Localization\Language.cs" />
+    <Compile Include="Domain\Localization\LocaleStringResource.cs" />
+    <Compile Include="Domain\Localization\LocalizationSettings.cs" />
+    <Compile Include="Domain\Localization\LocalizedProperty.cs" />
     <Compile Include="MimeTypes.cs" />
     <Compile Include="PagedList.cs" />
     <Compile Include="Plugins\BasePlugin.cs" />
@@ -271,5 +298,6 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

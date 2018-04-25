@@ -1,4 +1,4 @@
-﻿using QuGo.Core.Domain.Customers;
+﻿using QuGo.Core.Domain.Users;
 using QuGo.Core.Domain.Directory;
 using QuGo.Core.Domain.Localization;
 using QuGo.Core.Domain.Tax;
@@ -12,13 +12,13 @@ namespace QuGo.Core
     public interface IWorkContext
     {
         /// <summary>
-        /// Gets or sets the current customer
+        /// Gets or sets the current user
         /// </summary>
-        Customer CurrentCustomer { get; set; }
+        User CurrentUser { get; set; }
         /// <summary>
-        /// Gets or sets the original customer (in case the current one is impersonated)
+        /// Gets or sets the original user (in case the current one is impersonated)
         /// </summary>
-        Customer OriginalCustomerIfImpersonated { get; }
+        User OriginalUserIfImpersonated { get; }
         /// <summary>
         /// Gets or sets the current vendor (logged-in manager)
         /// </summary>

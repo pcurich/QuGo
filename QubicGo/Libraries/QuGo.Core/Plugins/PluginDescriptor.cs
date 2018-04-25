@@ -12,7 +12,7 @@ namespace QuGo.Core.Plugins
         {
             this.SupportedVersions = new List<string>();
             this.LimitedToStores = new List<int>();
-            this.LimitedToCustomerRoles = new List<int>();
+            this.LimitedToUserRoles = new List<int>();
         }
 
 
@@ -90,9 +90,9 @@ namespace QuGo.Core.Plugins
         public virtual IList<int> LimitedToStores { get; set; }
 
         /// <summary>
-        /// Gets or sets the list of customer role identifiers for which this plugin is available. If empty, then this plugin is available for all ones.
+        /// Gets or sets the list of user role identifiers for which this plugin is available. If empty, then this plugin is available for all ones.
         /// </summary>
-        public virtual IList<int> LimitedToCustomerRoles { get; set; }
+        public virtual IList<int> LimitedToUserRoles { get; set; }
 
         /// <summary>
         /// Gets or sets the value indicating whether plugin is installed

@@ -128,14 +128,14 @@ namespace QuGo.Core.Plugins
                             }
                         }
                         break;
-                    case "LimitedToCustomerRoles":
+                    case "LimitedToUserRoles":
                         {
-                            //parse list of customer role IDs
+                            //parse list of user role IDs
                             foreach (var id in value.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).Select(x => x.Trim()))
                             {
                                 int roleId;
                                 if (int.TryParse(id, out roleId))
-                                    descriptor.LimitedToCustomerRoles.Add(roleId);
+                                    descriptor.LimitedToUserRoles.Add(roleId);
                             }
                         }
                         break;
@@ -181,8 +181,8 @@ namespace QuGo.Core.Plugins
             if (plugin.LimitedToStores.Any())
                 keyValues.Add(new KeyValuePair<string, string>("LimitedToStores", string.Join(",", plugin.LimitedToStores)));
 
-            if (plugin.LimitedToCustomerRoles.Any())
-                keyValues.Add(new KeyValuePair<string, string>("LimitedToCustomerRoles", string.Join(",", plugin.LimitedToCustomerRoles)));
+            if (plugin.LimitedToUserRoles.Any())
+                keyValues.Add(new KeyValuePair<string, string>("LimitedToUserRoles", string.Join(",", plugin.LimitedToUserRoles)));
 
             var sb = new StringBuilder();
             for (int i = 0; i < keyValues.Count; i++)

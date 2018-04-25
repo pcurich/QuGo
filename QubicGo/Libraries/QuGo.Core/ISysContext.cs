@@ -1,6 +1,6 @@
-﻿using Nop.Core.Domain.Stores;
+﻿using QuGo.Core.Domain.Applications;
 
-namespace Nop.Core
+namespace QuGo.Core
 {
     /// <summary>
     /// Store context
@@ -8,8 +8,8 @@ namespace Nop.Core
     public interface ISysContext
     {
         /// <summary>
-        /// Gets or sets the current store
+        /// Gets or sets the current Application
         /// </summary>
-        Store CurrentStore { get; }
+        Application CurrentApplication { get; }
     }
 }
