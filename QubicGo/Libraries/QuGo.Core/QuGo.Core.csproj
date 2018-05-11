@@ -206,6 +206,11 @@
     <Compile Include="Domain\Applications\IApplicationMappingSupported.cs" />
     <Compile Include="Domain\Applications\ApplicationExtensions.cs" />
     <Compile Include="Domain\Applications\ApplicationMapping.cs" />
+    <Compile Include="Domain\Catalog\AttributeControlType.cs" />
+    <Compile Include="Domain\Common\Address.cs" />
+    <Compile Include="Domain\Common\AddressAttribute.cs" />
+    <Compile Include="Domain\Common\AddressAttributeValue.cs" />
+    <Compile Include="Domain\Common\AdminAreaSettings.cs" />
     <Compile Include="Domain\Common\CommonSettings.cs" />
     <Compile Include="Domain\Common\FulltextSearchMode.cs" />
     <Compile Include="Domain\Users\User.cs" />

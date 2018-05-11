@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using QuGo.Core.Domain.Common;
-using QuGo.Core.Domain.Orders;
+
 
 namespace QuGo.Core.Domain.Users
 {
@@ -148,35 +148,7 @@ namespace QuGo.Core.Domain.Users
             get { return _userRoles ?? (_userRoles = new List<UserRole>()); }
             protected set { _userRoles = value; }
         }
-
-        /// <summary>
-        /// Gets or sets shopping cart items
-        /// </summary>
-        public virtual ICollection<ShoppingCartItem> ShoppingCartItems
-        {
-            get { return _shoppingCartItems ?? (_shoppingCartItems = new List<ShoppingCartItem>()); }
-            protected set { _shoppingCartItems = value; }            
-        }
-
-        /// <summary>
-        /// Gets or sets return request of this user
-        /// </summary>
-        public virtual ICollection<ReturnRequest> ReturnRequests
-        {
-            get { return _returnRequests ?? (_returnRequests = new List<ReturnRequest>()); }
-            protected set { _returnRequests = value; }            
-        }
-        
-        /// <summary>
-        /// Default billing address
-        /// </summary>
-        public virtual Address BillingAddress { get; set; }
-
-        /// <summary>
-        /// Default shipping address
-        /// </summary>
-        public virtual Address ShippingAddress { get; set; }
-
+ 
         /// <summary>
         /// Gets or sets user addresses
         /// </summary>
