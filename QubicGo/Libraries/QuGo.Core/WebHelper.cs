@@ -288,9 +288,9 @@ namespace QuGo.Core
 
                 //let's resolve IWorkContext  here.
                 //Do not inject it via constructor  because it'll cause circular references
-                var storeContext = EngineContext.Current.Resolve<IStoreContext>();
-                var currentStore = storeContext.CurrentStore;
-                if (currentStore == null)
+                var sysContext = EngineContext.Current.Resolve<ISysContext>();
+                var currentApplication = sysContext.CurrentApplication;
+                if (currentApplication == null)
                     throw new Exception("Current store cannot be loaded");
 
                 if (String.IsNullOrWhiteSpace(httpHost))
@@ -298,30 +298,30 @@ namespace QuGo.Core
                     //HTTP_HOST variable is not available.
                     //This scenario is possible only when HttpContext is not available (for example, running in a schedule task)
                     //in this case use URL of a store entity configured in admin area
-                    result = currentStore.Url;
+                    result = currentApplication.Url;
                     if (!result.EndsWith("/"))
                         result += "/";
                 }
 
                 if (useSsl)
                 {
-                    result = !String.IsNullOrWhiteSpace(currentStore.SecureUrl) ?
+                    result = !String.IsNullOrWhiteSpace(currentApplication.SecureUrl) ?
                         //Secure URL specified. 
                         //So a store owner don't want it to be detected automatically.
                         //In this case let's use the specified secure URL
-                        currentStore.SecureUrl :
+                        currentApplication.SecureUrl :
                         //Secure URL is not specified.
                         //So a store owner wants it to be detected automatically.
                         result.Replace("http:/", "https:/");
                 }
                 else
                 {
-                    if (currentStore.SslEnabled && !String.IsNullOrWhiteSpace(currentStore.SecureUrl))
+                    if (currentApplication.SslEnabled && !String.IsNullOrWhiteSpace(currentApplication.SecureUrl))
                     {
                         //SSL is enabled in this store and secure URL is specified.
                         //So a store owner don't want it to be detected automatically.
                         //In this case let's use the specified non-secure URL
-                        result = currentStore.Url;
+                        result = currentApplication.Url;
                     }
                 }
                 #endregion
@@ -611,7 +611,7 @@ namespace QuGo.Core
                 bool success = TryWriteWebConfig();
                 if (!success)
                 {
-                    throw new QuGo.xception("nopCommerce needs to be restarted due to a configuration change, but was unable to do so." + Environment.NewLine +
+                    throw new SysException("QuGo needs to be restarted due to a configuration change, but was unable to do so." + Environment.NewLine +
                         "To prevent this issue in the future, a change to the web server configuration is required:" + Environment.NewLine +
                         "- run the application in a full trust environment, or" + Environment.NewLine +
                         "- give the application write access to the 'web.config' file.");
@@ -620,7 +620,7 @@ namespace QuGo.Core
 
                 if (!success)
                 {
-                    throw new QuGo.xception("nopCommerce needs to be restarted due to a configuration change, but was unable to do so." + Environment.NewLine +
+                    throw new SysException("QuGo needs to be restarted due to a configuration change, but was unable to do so." + Environment.NewLine +
                         "To prevent this issue in the future, a change to the web server configuration is required:" + Environment.NewLine +
                         "- run the application in a full trust environment, or" + Environment.NewLine +
                         "- give the application write access to the 'Global.asax' file.");

@@ -32,7 +32,7 @@ namespace QuGo.Core
 
             if (!IsValidEmail(output))
             {
-                throw new QuGo.xception("Email is not valid.");
+                throw new SysException("Email is not valid.");
             }
 
             return output;
@@ -225,9 +225,9 @@ namespace QuGo.Core
             Type instanceType = instance.GetType();
             PropertyInfo pi = instanceType.GetProperty(propertyName);
             if (pi == null)
-                throw new QuGo.xception("No property '{0}' found on the instance of type '{1}'.", propertyName, instanceType);
+                throw new SysException("No property '{0}' found on the instance of type '{1}'.", propertyName, instanceType);
             if (!pi.CanWrite)
-                throw new QuGo.xception("The property '{0}' on the instance of type '{1}' does not have a setter.", propertyName, instanceType);
+                throw new SysException("The property '{0}' on the instance of type '{1}' does not have a setter.", propertyName, instanceType);
             if (value != null && !value.GetType().IsAssignableFrom(pi.PropertyType))
                 value = To(value, pi.PropertyType);
             pi.SetValue(instance, value, new object[0]);

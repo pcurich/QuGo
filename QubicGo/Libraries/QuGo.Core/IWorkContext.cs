@@ -1,8 +1,7 @@
 ﻿using QuGo.Core.Domain.Users;
 using QuGo.Core.Domain.Directory;
 using QuGo.Core.Domain.Localization;
-using QuGo.Core.Domain.Tax;
-using QuGo.Core.Domain.Vendors;
+
 
 namespace QuGo.Core
 {
@@ -20,11 +19,6 @@ namespace QuGo.Core
         /// </summary>
         User OriginalUserIfImpersonated { get; }
         /// <summary>
-        /// Gets or sets the current vendor (logged-in manager)
-        /// </summary>
-        Vendor CurrentVendor { get; }
-
-        /// <summary>
         /// Get or set current user working language
         /// </summary>
         Language WorkingLanguage { get; set; }
@@ -32,11 +26,6 @@ namespace QuGo.Core
         /// Get or set current user working currency
         /// </summary>
         Currency WorkingCurrency { get; set; }
-        /// <summary>
-        /// Get or set current tax display type
-        /// </summary>
-        TaxDisplayType TaxDisplayType { get; set; }
-
         /// <summary>
         /// Get or set value indicating whether we're in admin area
         /// </summary>

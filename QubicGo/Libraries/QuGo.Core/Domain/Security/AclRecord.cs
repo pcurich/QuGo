@@ -1,11 +1,11 @@
-using QuGo.Core.Domain.Applications;
+using QuGo.Core.Domain. Users;
 
-namespace QuGo.Core.Domain.Applications
+namespace QuGo.Core.Domain.Security
 {
     /// <summary>
-    /// Represents a application mapping record
+    /// Represents an ACL record
     /// </summary>
-    public partial class ApplicationMapping : BaseEntity
+    public partial class AclRecord : BaseEntity
     {
         /// <summary>
         /// Gets or sets the entity identifier
@@ -18,13 +18,13 @@ namespace QuGo.Core.Domain.Applications
         public string EntityName { get; set; }
 
         /// <summary>
-        /// Gets or sets the application identifier
+        /// Gets or sets the user role identifier
         /// </summary>
-        public int ApplicationId { get; set; }
+        public int UserRoleId { get; set; }
 
         /// <summary>
-        /// Gets or sets the application
+        /// Gets or sets the user role
         /// </summary>
-        public virtual Application Application { get; set; }
+        public virtual UserRole UserRole { get; set; }
     }
 }

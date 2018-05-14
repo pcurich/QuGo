@@ -1,7 +1,7 @@
 ﻿
 using QuGo.Core.Configuration;
 
-namespace QuGoNop.Core.Domain.Common
+namespace QuGo.Core.Domain.Common
 {
     public class AdminAreaSettings : ISettings
     {

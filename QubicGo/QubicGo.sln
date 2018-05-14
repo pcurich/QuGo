@@ -7,6 +7,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuGo.Core", "Libraries\QuGo.Core\QuGo.Core.csproj", "{02F5F9B1-357A-439B-810E-9C0F50543B30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuGo.Data", "Libraries\QuGo.Data\QuGo.Data.csproj", "{E4737EB2-F213-48D3-A78B-C8D44A32FC99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,12 +19,17 @@ Global
 		{02F5F9B1-357A-439B-810E-9C0F50543B30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{02F5F9B1-357A-439B-810E-9C0F50543B30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{02F5F9B1-357A-439B-810E-9C0F50543B30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4737EB2-F213-48D3-A78B-C8D44A32FC99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4737EB2-F213-48D3-A78B-C8D44A32FC99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4737EB2-F213-48D3-A78B-C8D44A32FC99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4737EB2-F213-48D3-A78B-C8D44A32FC99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{02F5F9B1-357A-439B-810E-9C0F50543B30} = {47E396E5-B758-4B7D-AC0E-49020994A5A3}
+		{E4737EB2-F213-48D3-A78B-C8D44A32FC99} = {47E396E5-B758-4B7D-AC0E-49020994A5A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1A95D2BE-570D-48A8-BA29-25D8B474E024}

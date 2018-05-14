@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QuGo.Core.Domain.Stores
+namespace QuGo.Core.Domain.Applications
 {
     public static class ApplicationExtensions
     {

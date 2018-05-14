@@ -1,4 +1,4 @@
-namespace QuGo.Core.Domain.Stores
+namespace QuGo.Core.Domain.Applications
 {
     /// <summary>
     /// Represents an entity which supports Application mapping

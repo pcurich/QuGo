@@ -125,9 +125,6 @@ namespace QuGo.Core.Domain.Users
         {
             if (user.Addresses.Contains(address))
             {
-                if (user.BillingAddress == address) user.BillingAddress = null;
-                if (user.ShippingAddress == address) user.ShippingAddress = null;
-
                 user.Addresses.Remove(address);
             }
         }

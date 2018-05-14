@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using QuGo.Core.Domain.Stores;
+using QuGo.Core.Domain.Applications;
 
 namespace QuGo.Core.Domain.Localization
 {
