@@ -18,7 +18,7 @@ namespace QuGo.Data
     {
         #region Ctor
 
-        public NopObjectContext(string nameOrConnectionString)
+        public SysObjectContext(string nameOrConnectionString)
             : base(nameOrConnectionString)
         {
             //((IObjectContextAdapter) this).ObjectContext.ContextOptions.LazyLoadingEnabled = true;
@@ -37,7 +37,7 @@ namespace QuGo.Data
             var typesToRegister = Assembly.GetExecutingAssembly().GetTypes()
             .Where(type => !String.IsNullOrEmpty(type.Namespace))
             .Where(type => type.BaseType != null && type.BaseType.IsGenericType &&
-                type.BaseType.GetGenericTypeDefinition() == typeof(NopEntityTypeConfiguration<>));
+                type.BaseType.GetGenericTypeDefinition() == typeof(SysEntityTypeConfiguration<>));
             foreach (var type in typesToRegister)
             {
                 dynamic configurationInstance = Activator.CreateInstance(type);

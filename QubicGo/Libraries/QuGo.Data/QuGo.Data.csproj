@@ -66,6 +66,23 @@
     <Compile Include="Initializers\DropCreateCeDatabaseAlways.cs" />
     <Compile Include="Initializers\DropCreateCeDatabaseIfModelChanges.cs" />
     <Compile Include="Initializers\SqlCeInitializer.cs" />
+    <Compile Include="Mapping\Applications\ApplicationMap.cs" />
+    <Compile Include="Mapping\Applications\ApplicationMappingMap.cs" />
+    <Compile Include="Mapping\Common\AddressAttributeMap.cs" />
+    <Compile Include="Mapping\Common\AddressAttributeValueMap.cs" />
+    <Compile Include="Mapping\Common\AddressMap.cs" />
+    <Compile Include="Mapping\Common\GenericAttributeMap.cs" />
+    <Compile Include="Mapping\Common\SearchTermMap.cs" />
+    <Compile Include="Mapping\Directory\CityMap.cs" />
+    <Compile Include="Mapping\Directory\CountryMap.cs" />
+    <Compile Include="Mapping\Directory\CurrencyMap.cs" />
+    <Compile Include="Mapping\Directory\MeasureDimensionMap.cs" />
+    <Compile Include="Mapping\Directory\MeasureWeightMap.cs" />
+    <Compile Include="Mapping\Directory\StateProvinceMap.cs" />
+    <Compile Include="Mapping\Localization\LanguageMap.cs" />
+    <Compile Include="Mapping\Localization\LocaleStringResourceMap.cs" />
+    <Compile Include="Mapping\Localization\LocalizedPropertyMap.cs" />
+    <Compile Include="Mapping\SysEntityTypeConfiguration.cs" />
     <Compile Include="SysObjectContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QueryableExtensions.cs" />
@@ -82,9 +99,7 @@
       <Name>QuGo.Core</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mapping\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

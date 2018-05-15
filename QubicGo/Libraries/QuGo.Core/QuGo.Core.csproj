@@ -215,6 +215,7 @@
     <Compile Include="Domain\Common\CommonSettings.cs" />
     <Compile Include="Domain\Common\FulltextSearchMode.cs" />
     <Compile Include="Domain\Common\GenericAttribute.cs" />
+    <Compile Include="Domain\Common\SearchTerm.cs" />
     <Compile Include="Domain\Directory\City.cs" />
     <Compile Include="Domain\Directory\Country.cs" />
     <Compile Include="Domain\Directory\Currency.cs" />
