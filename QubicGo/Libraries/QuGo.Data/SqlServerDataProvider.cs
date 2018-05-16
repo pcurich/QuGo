@@ -95,7 +95,7 @@ namespace QuGo.Data
         public virtual void SetDatabaseInitializer()
         {
             //pass some table names to ensure that we have nopCommerce 2.X installed
-            var tablesToValidate = new[] { "Customer", "Discount", "Order", "Product", "ShoppingCartItem" };
+            var tablesToValidate = new[] { "User"  };
 
             //custom commands (stored procedures, indexes)
 
@@ -103,7 +103,7 @@ namespace QuGo.Data
             customCommands.AddRange(ParseCommands(CommonHelper.MapPath("~/App_Data/Install/SqlServer.Indexes.sql"), false));
             customCommands.AddRange(ParseCommands(CommonHelper.MapPath("~/App_Data/Install/SqlServer.StoredProcedures.sql"), false));
 
-            var initializer = new CreateTablesIfNotExist<NopObjectContext>(tablesToValidate, customCommands.ToArray());
+            var initializer = new CreateTablesIfNotExist<SysObjectContext>(tablesToValidate, customCommands.ToArray());
             Database.SetInitializer(initializer);
         }
 
