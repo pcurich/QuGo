@@ -73,6 +73,7 @@
     <Compile Include="Mapping\Common\AddressMap.cs" />
     <Compile Include="Mapping\Common\GenericAttributeMap.cs" />
     <Compile Include="Mapping\Common\SearchTermMap.cs" />
+    <Compile Include="Mapping\Configuration\SettingMap.cs" />
     <Compile Include="Mapping\Directory\CityMap.cs" />
     <Compile Include="Mapping\Directory\CountryMap.cs" />
     <Compile Include="Mapping\Directory\CurrencyMap.cs" />
@@ -88,6 +89,7 @@
     <Compile Include="Mapping\Security\AclRecordMap.cs" />
     <Compile Include="Mapping\Security\PermissionRecordMap.cs" />
     <Compile Include="Mapping\SysEntityTypeConfiguration.cs" />
+    <Compile Include="Mapping\Tasks\ScheduleTaskMap.cs" />
     <Compile Include="Mapping\Users\UserAttributeMap.cs" />
     <Compile Include="Mapping\Users\UserAttributeValueMap.cs" />
     <Compile Include="Mapping\Users\UserMap.cs" />

@@ -195,7 +195,7 @@
     <Compile Include="ComponentModel\GenericListTypeConverter.cs" />
     <Compile Include="ComponentModel\WriteLockDisposable.cs" />
     <Compile Include="Configuration\ISettings.cs" />
-    <Compile Include="Configuration\NopConfig.cs" />
+    <Compile Include="Configuration\SysConfig.cs" />
     <Compile Include="Data\BaseDataProviderManager.cs" />
     <Compile Include="Data\DataSettings.cs" />
     <Compile Include="Data\DataSettingsHelper.cs" />
@@ -216,6 +216,7 @@
     <Compile Include="Domain\Common\FulltextSearchMode.cs" />
     <Compile Include="Domain\Common\GenericAttribute.cs" />
     <Compile Include="Domain\Common\SearchTerm.cs" />
+    <Compile Include="Domain\Configuration\Setting.cs" />
     <Compile Include="Domain\Directory\City.cs" />
     <Compile Include="Domain\Directory\Country.cs" />
     <Compile Include="Domain\Directory\Currency.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Domain\Security\IAclSupported.cs" />
     <Compile Include="Domain\Security\PermissionRecord.cs" />
     <Compile Include="Domain\Security\SecuritySettings.cs" />
+    <Compile Include="Domain\Tasks\ScheduleTask.cs" />
     <Compile Include="Domain\Users\User.cs" />
     <Compile Include="Domain\Users\UserAttribute.cs" />
     <Compile Include="Domain\Users\UserAttributeValue.cs" />
