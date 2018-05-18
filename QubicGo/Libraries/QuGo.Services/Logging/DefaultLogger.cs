@@ -4,7 +4,7 @@ using System.Linq;
 using QuGo.Core;
 using QuGo.Core.Data;
 using QuGo.Core.Domain.Common;
-using QuGo.Core.Domain.Customers;
+using QuGo.Core.Domain.Users;
 using QuGo.Core.Domain.Logging;
 using QuGo.Data;
 
@@ -213,9 +213,9 @@ namespace QuGo.Services.Logging
         /// <param name="logLevel">Log level</param>
         /// <param name="shortMessage">The short message</param>
         /// <param name="fullMessage">The full message</param>
-        /// <param name="customer">The customer to associate log record with</param>
+        /// <param name="user">The user to associate log record with</param>
         /// <returns>A log item</returns>
-        public virtual Log InsertLog(LogLevel logLevel, string shortMessage, string fullMessage = "", Customer customer = null)
+        public virtual Log InsertLog(LogLevel logLevel, string shortMessage, string fullMessage = "", User user = null)
         {
             //check ignore word/phrase list?
             if (IgnoreLog(shortMessage) || IgnoreLog(fullMessage))
@@ -227,7 +227,7 @@ namespace QuGo.Services.Logging
                 ShortMessage = shortMessage,
                 FullMessage = fullMessage,
                 IpAddress = _webHelper.GetCurrentIpAddress(),
-                Customer = customer,
+                User = user,
                 PageUrl = _webHelper.GetThisPageUrl(true),
                 ReferrerUrl = _webHelper.GetUrlReferrer(),
                 CreatedOnUtc = DateTime.UtcNow

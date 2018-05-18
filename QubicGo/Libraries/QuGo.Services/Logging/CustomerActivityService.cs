@@ -5,7 +5,7 @@ using QuGo.Core;
 using QuGo.Core.Caching;
 using QuGo.Core.Data;
 using QuGo.Core.Domain.Common;
-using QuGo.Core.Domain.Customers;
+using QuGo.Core.Domain.Users;
 using QuGo.Core.Domain.Logging;
 using QuGo.Data;
 
@@ -14,7 +14,7 @@ namespace QuGo.Services.Logging
     /// <summary>
     /// Customer activity service
     /// </summary>
-    public class CustomerActivityService : ICustomerActivityService
+    public class CustomerActivityService : IUserActivityService
     {
         #region Constants
 
@@ -197,21 +197,21 @@ namespace QuGo.Services.Logging
         /// <returns>Activity log item</returns>
         public virtual ActivityLog InsertActivity(string systemKeyword, string comment, params object[] commentParams)
         {
-            return InsertActivity(_workContext.CurrentCustomer, systemKeyword, comment, commentParams);
+            return InsertActivity(_workContext.CurrentUser, systemKeyword, comment, commentParams);
         }
 
 
         /// <summary>
         /// Inserts an activity log item
         /// </summary>
-        /// <param name="customer">The customer</param>
+        /// <param name="user">The user</param>
         /// <param name="systemKeyword">The system keyword</param>
         /// <param name="comment">The activity comment</param>
         /// <param name="commentParams">The activity comment parameters for string.Format() function.</param>
         /// <returns>Activity log item</returns>
-        public virtual ActivityLog InsertActivity(Customer customer, string systemKeyword, string comment, params object[] commentParams)
+        public virtual ActivityLog InsertActivity(User user, string systemKeyword, string comment, params object[] commentParams)
         {
-            if (customer == null)
+            if (user == null)
                 return null;
 
             var activityTypes = GetAllActivityTypesCached();
@@ -227,7 +227,7 @@ namespace QuGo.Services.Logging
 
             var activity = new ActivityLog();
             activity.ActivityLogTypeId = activityType.Id;
-            activity.Customer = customer;
+            activity.User = user;
             activity.Comment = comment;
             activity.CreatedOnUtc = DateTime.UtcNow;
             activity.IpAddress = _webHelper.GetCurrentIpAddress();
@@ -254,14 +254,14 @@ namespace QuGo.Services.Logging
         /// </summary>
         /// <param name="createdOnFrom">Log item creation from; null to load all activities</param>
         /// <param name="createdOnTo">Log item creation to; null to load all activities</param>
-        /// <param name="customerId">Customer identifier; null to load all activities</param>
+        /// <param name="userId">User identifier; null to load all activities</param>
         /// <param name="activityLogTypeId">Activity log type identifier</param>
         /// <param name="pageIndex">Page index</param>
         /// <param name="pageSize">Page size</param>
         /// <param name="ipAddress">IP address; null or empty to load all activities</param>
         /// <returns>Activity log items</returns>
         public virtual IPagedList<ActivityLog> GetAllActivities(DateTime? createdOnFrom = null,
-            DateTime? createdOnTo = null, int? customerId = null, int activityLogTypeId = 0,
+            DateTime? createdOnTo = null, int? userId = null, int activityLogTypeId = 0,
             int pageIndex = 0, int pageSize = int.MaxValue, string ipAddress = null)
         {
             var query = _activityLogRepository.Table;
@@ -273,8 +273,8 @@ namespace QuGo.Services.Logging
                 query = query.Where(al => createdOnTo.Value >= al.CreatedOnUtc);
             if (activityLogTypeId > 0)
                 query = query.Where(al => activityLogTypeId == al.ActivityLogTypeId);
-            if (customerId.HasValue)
-                query = query.Where(al => customerId.Value == al.CustomerId);
+            if (userId.HasValue)
+                query = query.Where(al => userId.Value == al.UserId);
 
             query = query.OrderByDescending(al => al.CreatedOnUtc);
 
