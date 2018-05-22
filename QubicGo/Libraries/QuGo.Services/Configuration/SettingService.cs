@@ -23,11 +23,11 @@ namespace QuGo.Services.Configuration
         /// <summary>
         /// Key for caching
         /// </summary>
-        private const string SETTINGS_ALL_KEY = "Nop.setting.all";
+        private const string SETTINGS_ALL_KEY = "QuGo.setting.all";
         /// <summary>
         /// Key pattern to clear cache
         /// </summary>
-        private const string SETTINGS_PATTERN_KEY = "Nop.setting.";
+        private const string SETTINGS_PATTERN_KEY = "QuGo.setting.";
 
         #endregion
 
