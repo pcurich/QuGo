@@ -6,7 +6,7 @@ using QuGo.Core.Caching;
 using QuGo.Core.Data;
 using QuGo.Core.Domain.Catalog;
 using QuGo.Core.Domain.Directory;
-using QuGo.Core.Domain.Stores;
+using QuGo.Core.Domain.Applications;
 using QuGo.Services.Events;
 using QuGo.Services.Localization;
 
@@ -37,8 +37,8 @@ namespace QuGo.Services.Directory
         #region Fields
 
         private readonly IRepository<Country> _countryRepository;
-        private readonly IRepository<StoreMapping> _storeMappingRepository;
-        private readonly IStoreContext _storeContext;
+        private readonly IRepository<ApplicationMapping> _applicationMappingRepository;
+        private readonly ISysContext _sysContext;
         private readonly CatalogSettings _catalogSettings;
         private readonly IEventPublisher _eventPublisher;
         private readonly ICacheManager _cacheManager;
@@ -52,21 +52,21 @@ namespace QuGo.Services.Directory
         /// </summary>
         /// <param name="cacheManager">Cache manager</param>
         /// <param name="countryRepository">Country repository</param>
-        /// <param name="storeMappingRepository">Store mapping repository</param>
-        /// <param name="storeContext">Store context</param>
+        /// <param name="ApplicationMappingRepository">Application mapping repository</param>
+        /// <param name="sysContext">Sys context</param>
         /// <param name="catalogSettings">Catalog settings</param>
         /// <param name="eventPublisher">Event published</param>
         public CountryService(ICacheManager cacheManager,
             IRepository<Country> countryRepository,
-            IRepository<StoreMapping> storeMappingRepository,
-            IStoreContext storeContext,
+            IRepository<ApplicationMapping> applicationMappingRepository,
+            ISysContext sysContext,
             CatalogSettings catalogSettings,
             IEventPublisher eventPublisher)
         {
             this._cacheManager = cacheManager;
             this._countryRepository = countryRepository;
-            this._storeMappingRepository = storeMappingRepository;
-            this._storeContext = storeContext;
+            this._applicationMappingRepository = applicationMappingRepository;
+            this._applicationContext = sysContext;
             this._catalogSettings = catalogSettings;
             this._eventPublisher = eventPublisher;
         }
@@ -108,15 +108,15 @@ namespace QuGo.Services.Directory
                     query = query.Where(c => c.Published);
                 query = query.OrderBy(c => c.DisplayOrder).ThenBy(c => c.Name);
 
-                if (!showHidden && !_catalogSettings.IgnoreStoreLimitations)
+                if (!showHidden && !_catalogSettings.IgnoreApplicationLimitations)
                 {
-                    //Store mapping
-                    var currentStoreId = _storeContext.CurrentStore.Id;
+                    //Application mapping
+                    var currentApplicationId = _sysContext.CurrentApplication.Id;
                     query = from c in query
-                            join sc in _storeMappingRepository.Table
+                            join sc in _applicationMappingRepository.Table
                             on new { c1 = c.Id, c2 = "Country" } equals new { c1 = sc.EntityId, c2 = sc.EntityName } into c_sc
                             from sc in c_sc.DefaultIfEmpty()
-                            where !c.LimitedToStores || currentStoreId == sc.StoreId
+                            where !c.LimitedToApplications || currentApplicationId == sc.ApplicationId
                             select c;
 
                     //only distinct entities (group by ID)
@@ -140,28 +140,6 @@ namespace QuGo.Services.Directory
                 }
                 return countries;
             });
-        }
-
-        /// <summary>
-        /// Gets all countries that allow billing
-        /// </summary>
-        /// <param name="languageId">Language identifier. It's used to sort countries by localized names (if specified); pass 0 to skip it</param>
-        /// <param name="showHidden">A value indicating whether to show hidden records</param>
-        /// <returns>Countries</returns>
-        public virtual IList<Country> GetAllCountriesForBilling(int languageId = 0, bool showHidden = false)
-        {
-            return GetAllCountries(languageId, showHidden).Where(c => c.AllowsBilling).ToList();
-        }
-
-        /// <summary>
-        /// Gets all countries that allow shipping
-        /// </summary>
-        /// <param name="languageId">Language identifier. It's used to sort countries by localized names (if specified); pass 0 to skip it</param>
-        /// <param name="showHidden">A value indicating whether to show hidden records</param>
-        /// <returns>Countries</returns>
-        public virtual IList<Country> GetAllCountriesForShipping(int languageId = 0, bool showHidden = false)
-        {
-            return GetAllCountries(languageId, showHidden).Where(c => c.AllowsShipping).ToList();
         }
 
         /// <summary>

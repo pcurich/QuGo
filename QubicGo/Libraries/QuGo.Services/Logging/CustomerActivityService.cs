@@ -12,9 +12,9 @@ using QuGo.Data;
 namespace QuGo.Services.Logging
 {
     /// <summary>
-    /// Customer activity service
+    /// user activity service
     /// </summary>
-    public class CustomerActivityService : IUserActivityService
+    public class userActivityService : IUserActivityService
     {
         #region Constants
 
@@ -57,7 +57,7 @@ namespace QuGo.Services.Logging
         /// <param name="dataProvider">WeData provider</param>
         /// <param name="commonSettings">Common settings</param>
         /// <param name="webHelper">Web helper</param>
-        public CustomerActivityService(ICacheManager cacheManager,
+        public userActivityService(ICacheManager cacheManager,
             IRepository<ActivityLog> activityLogRepository,
             IRepository<ActivityLogType> activityLogTypeRepository,
             IWorkContext workContext,

@@ -207,6 +207,7 @@
     <Compile Include="Domain\Applications\ApplicationExtensions.cs" />
     <Compile Include="Domain\Applications\ApplicationMapping.cs" />
     <Compile Include="Domain\Catalog\AttributeControlType.cs" />
+    <Compile Include="Domain\Catalog\CatalogSettings.cs" />
     <Compile Include="Domain\Common\Address.cs" />
     <Compile Include="Domain\Common\AddressAttribute.cs" />
     <Compile Include="Domain\Common\AddressAttributeValue.cs" />
@@ -231,6 +232,16 @@
     <Compile Include="Domain\Logging\ActivityLogType.cs" />
     <Compile Include="Domain\Logging\Log.cs" />
     <Compile Include="Domain\Logging\LogLevel.cs" />
+    <Compile Include="Domain\Messages\EmailAccount.cs" />
+    <Compile Include="Domain\Messages\EmailAccountSettings.cs" />
+    <Compile Include="Domain\Messages\Events.cs" />
+    <Compile Include="Domain\Messages\MessageDelayPeriod.cs" />
+    <Compile Include="Domain\Messages\MessageTemplate.cs" />
+    <Compile Include="Domain\Messages\MessageTemplatesSettings.cs" />
+    <Compile Include="Domain\Messages\MessageTemplateSystemNames.cs" />
+    <Compile Include="Domain\Messages\NewsLetterSubscription.cs" />
+    <Compile Include="Domain\Messages\QueuedEmail.cs" />
+    <Compile Include="Domain\Messages\QueuedEmailPriority.cs" />
     <Compile Include="Domain\Security\AclRecord.cs" />
     <Compile Include="Domain\Security\DefaultPermissionRecord.cs" />
     <Compile Include="Domain\Security\IAclSupported.cs" />

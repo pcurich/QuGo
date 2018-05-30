@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using QuGo.Core.Domain.Customers;
+using QuGo.Core.Domain.Users;
 using QuGo.Core.Domain.Directory;
 
 namespace QuGo.Services.Directory
@@ -15,9 +15,9 @@ namespace QuGo.Services.Directory
         /// Gets currency live rates
         /// </summary>
         /// <param name="exchangeRateCurrencyCode">Exchange rate currency code</param>
-        /// <param name="customer">Load records allowed only to a specified customer; pass null to ignore ACL permissions</param>
+        /// <param name="user">Load records allowed only to a specified user; pass null to ignore ACL permissions</param>
         /// <returns>Exchange rates</returns>
-        IList<ExchangeRate> GetCurrencyLiveRates(string exchangeRateCurrencyCode, Customer customer = null);
+        IList<ExchangeRate> GetCurrencyLiveRates(string exchangeRateCurrencyCode, User user = null);
 
         /// <summary>
         /// Deletes currency
@@ -102,7 +102,7 @@ namespace QuGo.Services.Directory
         /// <param name="amount">Amount</param>
         /// <param name="sourceCurrencyCode">Source currency code</param>
         /// <returns>Converted value</returns>
-        decimal ConvertToPrimaryStoreCurrency(decimal amount, Currency sourceCurrencyCode);
+        decimal ConvertToPrimaryApplicationCurrency(decimal amount, Currency sourceCurrencyCode);
 
         /// <summary>
         /// Converts from primary store currency
@@ -110,7 +110,7 @@ namespace QuGo.Services.Directory
         /// <param name="amount">Amount</param>
         /// <param name="targetCurrencyCode">Target currency code</param>
         /// <returns>Converted value</returns>
-        decimal ConvertFromPrimaryStoreCurrency(decimal amount, Currency targetCurrencyCode);
+        decimal ConvertFromPrimaryApplicationCurrency(decimal amount, Currency targetCurrencyCode);
 
         #endregion
 
@@ -119,9 +119,9 @@ namespace QuGo.Services.Directory
         /// <summary>
         /// Load active exchange rate provider
         /// </summary>
-        /// <param name="customer">Load records allowed only to a specified customer; pass null to ignore ACL permissions</param>
+        /// <param name="user">Load records allowed only to a specified user; pass null to ignore ACL permissions</param>
         /// <returns>Active exchange rate provider</returns>
-        IExchangeRateProvider LoadActiveExchangeRateProvider(Customer customer = null);
+        IExchangeRateProvider LoadActiveExchangeRateProvider(User user = null);
 
         /// <summary>
         /// Load exchange rate provider by system name
@@ -133,10 +133,10 @@ namespace QuGo.Services.Directory
         /// <summary>
         /// Load all exchange rate providers
         /// </summary>
-        /// <param name="customer">Load records allowed only to a specified customer; pass null to ignore ACL permissions</param>
+        /// <param name="user">Load records allowed only to a specified user; pass null to ignore ACL permissions</param>
         /// <returns>Exchange rate providers</returns>
-        IList<IExchangeRateProvider> LoadAllExchangeRateProviders(Customer customer = null);
+        IList<IExchangeRateProvider> LoadAllExchangeRateProviders(User user = null);
 
         #endregion
     }
-}
+} 

@@ -71,7 +71,7 @@ namespace QuGo.Services.Logging
             return null;
         }
 
-        /// <summary>Customer
+        /// <summary>user
         /// Get log items by identifiers
         /// </summary>
         /// <param name="logIds">Log item identifiers</param>

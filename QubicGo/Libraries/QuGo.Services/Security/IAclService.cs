@@ -41,9 +41,9 @@ namespace QuGo.Services.Security
         /// Inserts an ACL record
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
-        /// <param name="customerRoleId">Customer role id</param>
+        /// <param name="userRoleId">user role id</param>
         /// <param name="entity">Entity</param>
-        void InsertAclRecord<T>(T entity, int customerRoleId) where T : BaseEntity, IAclSupported;
+        void InsertAclRecord<T>(T entity, int userRoleId) where T : BaseEntity, IAclSupported;
 
         /// <summary>
         /// Updates the ACL record
@@ -52,12 +52,12 @@ namespace QuGo.Services.Security
         void UpdateAclRecord(AclRecord aclRecord);
 
         /// <summary>
-        /// Find customer role identifiers with granted access
+        /// Find user role identifiers with granted access
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
         /// <param name="entity">Wntity</param>
-        /// <returns>Customer role identifiers</returns>
-        int[] GetCustomerRoleIdsWithAccess<T>(T entity) where T : BaseEntity, IAclSupported;
+        /// <returns>user role identifiers</returns>
+        int[] GetuserRoleIdsWithAccess<T>(T entity) where T : BaseEntity, IAclSupported;
 
         /// <summary>
         /// Authorize ACL permission
@@ -72,7 +72,7 @@ namespace QuGo.Services.Security
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
         /// <param name="entity">Wntity</param>
-        /// <param name="customer">Customer</param>
+        /// <param name="user">user</param>
         /// <returns>true - authorized; otherwise, false</returns>
         bool Authorize<T>(T entity, User user) where T : BaseEntity, IAclSupported;
     }

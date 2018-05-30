@@ -21,7 +21,7 @@ namespace QuGo.Services.Security
         /// Key for caching
         /// </summary>
         /// <remarks>
-        /// {0} : customer role ID
+        /// {0} : user role ID
         /// {1} : permission system name
         /// </remarks>
         private const string PERMISSIONS_ALLOWED_KEY = "QuGo.permission.allowed-{0}-{1}";
@@ -34,7 +34,7 @@ namespace QuGo.Services.Security
         #region Fields
 
         private readonly IRepository<PermissionRecord> _permissionRecordRepository;
-        private readonly ICustomerService _customerService;
+        private readonly IUserService _userService;
         private readonly IWorkContext _workContext;
         private readonly ILocalizationService _localizationService;
         private readonly ILanguageService _languageService;
@@ -48,20 +48,20 @@ namespace QuGo.Services.Security
         /// Ctor
         /// </summary>
         /// <param name="permissionRecordRepository">Permission repository</param>
-        /// <param name="customerService">Customer service</param>
+        /// <param name="userService">user service</param>
         /// <param name="workContext">Work context</param>
         /// <param name="localizationService">Localization service</param>
         /// <param name="languageService">Language service</param>
         /// <param name="cacheManager">Cache manager</param>
         public PermissionService(IRepository<PermissionRecord> permissionRecordRepository,
-            ICustomerService customerService,
+            IUserService userService,
             IWorkContext workContext,
              ILocalizationService localizationService,
             ILanguageService languageService,
             ICacheManager cacheManager)
         {
             this._permissionRecordRepository = permissionRecordRepository;
-            this._customerService = customerService;
+            this._userService  = userService;
             this._workContext = workContext;
             this._localizationService = localizationService;
             this._languageService = languageService;
@@ -76,17 +76,17 @@ namespace QuGo.Services.Security
         /// Authorize permission
         /// </summary>
         /// <param name="permissionRecordSystemName">Permission record system name</param>
-        /// <param name="customerRole">Customer role</param>
+        /// <param name="userRole">user role</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        protected virtual bool Authorize(string permissionRecordSystemName, CustomerRole customerRole)
+        protected virtual bool Authorize(string permissionRecordSystemName, userRole userRole)
         {
             if (String.IsNullOrEmpty(permissionRecordSystemName))
                 return false;
             
-            string key = string.Format(PERMISSIONS_ALLOWED_KEY, customerRole.Id, permissionRecordSystemName);
+            string key = string.Format(PERMISSIONS_ALLOWED_KEY, userRole.Id, permissionRecordSystemName);
             return _cacheManager.Get(key, () =>
             {
-                foreach (var permission1 in customerRole.PermissionRecords)
+                foreach (var permission1 in userRole.PermissionRecords)
                     if (permission1.SystemName.Equals(permissionRecordSystemName, StringComparison.InvariantCultureIgnoreCase))
                         return true;
 
@@ -207,33 +207,33 @@ namespace QuGo.Services.Security
                     };
 
 
-                    //default customer role mappings
+                    //default user role mappings
                     var defaultPermissions = permissionProvider.GetDefaultPermissions();
                     foreach (var defaultPermission in defaultPermissions)
                     {
-                        var customerRole = _customerService.GetCustomerRoleBySystemName(defaultPermission.CustomerRoleSystemName);
-                        if (customerRole == null)
+                        var userRole = _userService.GetuserRoleBySystemName(defaultPermission.userRoleSystemName);
+                        if (userRole == null)
                         {
                             //new role (save it)
-                            customerRole = new CustomerRole
+                            userRole = new userRole
                             {
-                                Name = defaultPermission.CustomerRoleSystemName,
+                                Name = defaultPermission.userRoleSystemName,
                                 Active = true,
-                                SystemName = defaultPermission.CustomerRoleSystemName
+                                SystemName = defaultPermission.userRoleSystemName
                             };
-                            _customerService.InsertCustomerRole(customerRole);
+                            _userService.InsertuserRole(userRole);
                         }
 
 
                         var defaultMappingProvided = (from p in defaultPermission.PermissionRecords
                                                       where p.SystemName == permission1.SystemName
                                                       select p).Any();
-                        var mappingExists = (from p in customerRole.PermissionRecords
+                        var mappingExists = (from p in userRole.PermissionRecords
                                              where p.SystemName == permission1.SystemName
                                              select p).Any();
                         if (defaultMappingProvided && !mappingExists)
                         {
-                            permission1.CustomerRoles.Add(customerRole);
+                            permission1.userRoles.Add(userRole);
                         }
                     }
 
@@ -274,33 +274,33 @@ namespace QuGo.Services.Security
         /// <returns>true - authorized; otherwise, false</returns>
         public virtual bool Authorize(PermissionRecord permission)
         {
-            return Authorize(permission, _workContext.CurrentCustomer);
+            return Authorize(permission, _workContext.Currentuser);
         }
 
         /// <summary>
         /// Authorize permission
         /// </summary>
         /// <param name="permission">Permission record</param>
-        /// <param name="customer">Customer</param>
+        /// <param name="user">user</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        public virtual bool Authorize(PermissionRecord permission, Customer customer)
+        public virtual bool Authorize(PermissionRecord permission, user user)
         {
             if (permission == null)
                 return false;
 
-            if (customer == null)
+            if (user == null)
                 return false;
 
             //old implementation of Authorize method
-            //var customerRoles = customer.CustomerRoles.Where(cr => cr.Active);
-            //foreach (var role in customerRoles)
+            //var userRoles = user.userRoles.Where(cr => cr.Active);
+            //foreach (var role in userRoles)
             //    foreach (var permission1 in role.PermissionRecords)
             //        if (permission1.SystemName.Equals(permission.SystemName, StringComparison.InvariantCultureIgnoreCase))
             //            return true;
 
             //return false;
 
-            return Authorize(permission.SystemName, customer);
+            return Authorize(permission.SystemName, user);
         }
 
         /// <summary>
@@ -310,22 +310,22 @@ namespace QuGo.Services.Security
         /// <returns>true - authorized; otherwise, false</returns>
         public virtual bool Authorize(string permissionRecordSystemName)
         {
-            return Authorize(permissionRecordSystemName, _workContext.CurrentCustomer);
+            return Authorize(permissionRecordSystemName, _workContext.Currentuser);
         }
 
         /// <summary>
         /// Authorize permission
         /// </summary>
         /// <param name="permissionRecordSystemName">Permission record system name</param>
-        /// <param name="customer">Customer</param>
+        /// <param name="user">user</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        public virtual bool Authorize(string permissionRecordSystemName, Customer customer)
+        public virtual bool Authorize(string permissionRecordSystemName, user user)
         {
             if (String.IsNullOrEmpty(permissionRecordSystemName))
                 return false;
 
-            var customerRoles = customer.CustomerRoles.Where(cr => cr.Active);
-            foreach (var role in customerRoles)
+            var userRoles = user.userRoles.Where(cr => cr.Active);
+            foreach (var role in userRoles)
                 if (Authorize(permissionRecordSystemName, role))
                     //yes, we have such permission
                     return true;

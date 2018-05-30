@@ -185,12 +185,12 @@ namespace QuGo.Services.Security
         }
 
         /// <summary>
-        /// Find customer role identifiers with granted access
+        /// Find user role identifiers with granted access
         /// </summary>
         /// <typeparam name="T">Type</typeparam>
         /// <param name="entity">Wntity</param>
-        /// <returns>Customer role identifiers</returns>
-        public virtual int[] GetCustomerRoleIdsWithAccess<T>(T entity) where T : BaseEntity, IAclSupported
+        /// <returns>user role identifiers</returns>
+        public virtual int[] GetuserRoleIdsWithAccess<T>(T entity) where T : BaseEntity, IAclSupported
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
@@ -242,7 +242,7 @@ namespace QuGo.Services.Security
                 return true;
 
             foreach (var role1 in user.UserRoles.Where(cr => cr.Active))
-                foreach (var role2Id in GetCustomerRoleIdsWithAccess(entity))
+                foreach (var role2Id in GetuserRoleIdsWithAccess(entity))
                     if (role1.Id == role2Id)
                         //yes, we have such permission
                         return true;

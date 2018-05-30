@@ -4,11 +4,11 @@ using System.Linq;
 using QuGo.Core;
 using QuGo.Core.Caching;
 using QuGo.Core.Data;
-using QuGo.Core.Domain.Customers;
+using QuGo.Core.Domain.Users;
 using QuGo.Core.Domain.Directory;
 using QuGo.Core.Plugins;
 using QuGo.Services.Events;
-using QuGo.Services.Stores;
+using QuGo.Services.Applications;
 
 namespace QuGo.Services.Directory
 {
@@ -43,7 +43,7 @@ namespace QuGo.Services.Directory
         #region Fields
 
         private readonly IRepository<Currency> _currencyRepository;
-        private readonly IStoreMappingService _storeMappingService;
+        private readonly IApplicationMappingService _applicationMappingService;
         private readonly ICacheManager _cacheManager;
         private readonly CurrencySettings _currencySettings;
         private readonly IPluginFinder _pluginFinder;
@@ -58,20 +58,20 @@ namespace QuGo.Services.Directory
         /// </summary>
         /// <param name="cacheManager">Cache manager</param>
         /// <param name="currencyRepository">Currency repository</param>
-        /// <param name="storeMappingService">Store mapping service</param>
+        /// <param name="applicationMappingService">Application mapping service</param>
         /// <param name="currencySettings">Currency settings</param>
         /// <param name="pluginFinder">Plugin finder</param>
         /// <param name="eventPublisher">Event published</param>
         public CurrencyService(ICacheManager cacheManager,
             IRepository<Currency> currencyRepository,
-            IStoreMappingService storeMappingService,
+            IApplicationMappingService applicationMappingService,
             CurrencySettings currencySettings,
             IPluginFinder pluginFinder,
             IEventPublisher eventPublisher)
         {
             this._cacheManager = cacheManager;
             this._currencyRepository = currencyRepository;
-            this._storeMappingService = storeMappingService;
+            this._applicationMappingService = applicationMappingService;
             this._currencySettings = currencySettings;
             this._pluginFinder = pluginFinder;
             this._eventPublisher = eventPublisher;
@@ -87,11 +87,11 @@ namespace QuGo.Services.Directory
         /// Gets currency live rates
         /// </summary>
         /// <param name="exchangeRateCurrencyCode">Exchange rate currency code</param>
-        /// <param name="customer">Load records allowed only to a specified customer; pass null to ignore ACL permissions</param>
+        /// <param name="user">Load records allowed only to a specified user; pass null to ignore ACL permissions</param>
         /// <returns>Exchange rates</returns>
-        public virtual IList<ExchangeRate> GetCurrencyLiveRates(string exchangeRateCurrencyCode, Customer customer = null)
+        public virtual IList<ExchangeRate> GetCurrencyLiveRates(string exchangeRateCurrencyCode, User user = null)
         {
-            var exchangeRateProvider = LoadActiveExchangeRateProvider(customer);
+            var exchangeRateProvider = LoadActiveExchangeRateProvider(user);
             if (exchangeRateProvider == null)
                 throw new Exception("Active exchange rate provider cannot be loaded");
 
@@ -145,9 +145,9 @@ namespace QuGo.Services.Directory
         /// Gets all currencies
         /// </summary>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
-        /// <param name="storeId">Load records allowed only in a specified store; pass 0 to load all records</param>
+        /// <param name="applicationId">Load records allowed only in a specified application; pass 0 to load all records</param>
         /// <returns>Currencies</returns>
-        public virtual IList<Currency> GetAllCurrencies(bool showHidden = false, int storeId = 0)
+        public virtual IList<Currency> GetAllCurrencies(bool showHidden = false, int applicationId = 0)
         {
             string key = string.Format(CURRENCIES_ALL_KEY, showHidden);
             var currencies = _cacheManager.Get(key, () =>
@@ -159,11 +159,11 @@ namespace QuGo.Services.Directory
                 return query.ToList();
             });
 
-            //store mapping
-            if (storeId > 0)
+            //application mapping
+            if (applicationId > 0)
             {
                 currencies = currencies
-                    .Where(c => _storeMappingService.Authorize(c, storeId))
+                    .Where(c => _applicationMappingService.Authorize(c, applicationId))
                     .ToList();
             }
             return currencies;
@@ -266,7 +266,7 @@ namespace QuGo.Services.Directory
             {
                 decimal exchangeRate = sourceCurrencyCode.Rate;
                 if (exchangeRate == decimal.Zero)
-                    throw new QuGo.xception(string.Format("Exchange rate not found for currency [{0}]", sourceCurrencyCode.Name));
+                    throw new SysException(string.Format("Exchange rate not found for currency [{0}]", sourceCurrencyCode.Name));
                 result = result / exchangeRate;
             }
             return result;
@@ -292,38 +292,38 @@ namespace QuGo.Services.Directory
             {
                 decimal exchangeRate = targetCurrencyCode.Rate;
                 if (exchangeRate == decimal.Zero)
-                    throw new QuGo.xception(string.Format("Exchange rate not found for currency [{0}]", targetCurrencyCode.Name));
+                    throw new SysException(string.Format("Exchange rate not found for currency [{0}]", targetCurrencyCode.Name));
                 result = result * exchangeRate;
             }
             return result;
         }
 
         /// <summary>
-        /// Converts to primary store currency 
+        /// Converts to primary application currency 
         /// </summary>
         /// <param name="amount">Amount</param>
         /// <param name="sourceCurrencyCode">Source currency code</param>
         /// <returns>Converted value</returns>
-        public virtual decimal ConvertToPrimaryStoreCurrency(decimal amount, Currency sourceCurrencyCode)
+        public virtual decimal ConvertToPrimaryApplicationCurrency(decimal amount, Currency sourceCurrencyCode)
         {
             if (sourceCurrencyCode == null)
                 throw new ArgumentNullException("sourceCurrencyCode");
 
-            var primaryStoreCurrency = GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId);
-            var result = ConvertCurrency(amount, sourceCurrencyCode, primaryStoreCurrency);
+            var primaryApplicationCurrency = GetCurrencyById(_currencySettings.PrimaryApplicationCurrencyId);
+            var result = ConvertCurrency(amount, sourceCurrencyCode, primaryApplicationCurrency);
             return result;
         }
 
         /// <summary>
-        /// Converts from primary store currency
+        /// Converts from primary application currency
         /// </summary>
         /// <param name="amount">Amount</param>
         /// <param name="targetCurrencyCode">Target currency code</param>
         /// <returns>Converted value</returns>
-        public virtual decimal ConvertFromPrimaryStoreCurrency(decimal amount, Currency targetCurrencyCode)
+        public virtual decimal ConvertFromPrimaryApplicationCurrency(decimal amount, Currency targetCurrencyCode)
         {
-            var primaryStoreCurrency = GetCurrencyById(_currencySettings.PrimaryStoreCurrencyId);
-            var result = ConvertCurrency(amount, primaryStoreCurrency, targetCurrencyCode);
+            var primaryApplicationCurrency = GetCurrencyById(_currencySettings.PrimaryApplicationCurrencyId);
+            var result = ConvertCurrency(amount, primaryApplicationCurrency, targetCurrencyCode);
             return result;
         }
 
@@ -334,13 +334,13 @@ namespace QuGo.Services.Directory
         /// <summary>
         /// Load active exchange rate provider
         /// </summary>
-        /// <param name="customer">Load records allowed only to a specified customer; pass null to ignore ACL permissions</param>
+        /// <param name="user">Load records allowed only to a specified user; pass null to ignore ACL permissions</param>
         /// <returns>Active exchange rate provider</returns>
-        public virtual IExchangeRateProvider LoadActiveExchangeRateProvider(Customer customer = null)
+        public virtual IExchangeRateProvider LoadActiveExchangeRateProvider(User user = null)
         {
             var exchangeRateProvider = LoadExchangeRateProviderBySystemName(_currencySettings.ActiveExchangeRateProviderSystemName);
-            if (exchangeRateProvider == null || !_pluginFinder.AuthorizedForUser(exchangeRateProvider.PluginDescriptor, customer))
-                exchangeRateProvider = LoadAllExchangeRateProviders(customer).FirstOrDefault();
+            if (exchangeRateProvider == null || !_pluginFinder.AuthorizedForUser(exchangeRateProvider.PluginDescriptor, user))
+                exchangeRateProvider = LoadAllExchangeRateProviders(user).FirstOrDefault();
 
             return exchangeRateProvider;
         }
@@ -362,11 +362,11 @@ namespace QuGo.Services.Directory
         /// <summary>
         /// Load all exchange rate providers
         /// </summary>
-        /// <param name="customer">Load records allowed only to a specified customer; pass null to ignore ACL permissions</param>
+        /// <param name="user">Load records allowed only to a specified user; pass null to ignore ACL permissions</param>
         /// <returns>Exchange rate providers</returns>
-        public virtual IList<IExchangeRateProvider> LoadAllExchangeRateProviders(Customer customer = null)
+        public virtual IList<IExchangeRateProvider> LoadAllExchangeRateProviders(User user = null)
         {
-            var exchangeRateProviders = _pluginFinder.GetPlugins<IExchangeRateProvider>(customer: customer);
+            var exchangeRateProviders = _pluginFinder.GetPlugins<IExchangeRateProvider>(user: user);
 
             return exchangeRateProviders.OrderBy(tp => tp.PluginDescriptor).ToList();
         }

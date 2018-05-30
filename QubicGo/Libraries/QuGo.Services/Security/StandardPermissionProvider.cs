@@ -11,15 +11,15 @@ namespace QuGo.Services.Security
     {
         //admin area permissions
         public static readonly PermissionRecord AccessAdminPanel = new PermissionRecord { Name = "Access admin area", SystemName = "AccessAdminPanel", Category = "Standard" };
-        public static readonly PermissionRecord AllowCustomerImpersonation = new PermissionRecord { Name = "Admin area. Allow Customer Impersonation", SystemName = "AllowCustomerImpersonation", Category = "Customers" };
+        public static readonly PermissionRecord AllowUserImpersonation = new PermissionRecord { Name = "Admin area. Allow User Impersonation", SystemName = "AllowUserImpersonation", Category = "Users" };
         public static readonly PermissionRecord ManageProducts = new PermissionRecord { Name = "Admin area. Manage Products", SystemName = "ManageProducts", Category = "Catalog" };
         public static readonly PermissionRecord ManageCategories = new PermissionRecord { Name = "Admin area. Manage Categories", SystemName = "ManageCategories", Category = "Catalog" };
         public static readonly PermissionRecord ManageManufacturers = new PermissionRecord { Name = "Admin area. Manage Manufacturers", SystemName = "ManageManufacturers", Category = "Catalog" };
         public static readonly PermissionRecord ManageProductReviews = new PermissionRecord { Name = "Admin area. Manage Product Reviews", SystemName = "ManageProductReviews", Category = "Catalog" };
         public static readonly PermissionRecord ManageProductTags = new PermissionRecord { Name = "Admin area. Manage Product Tags", SystemName = "ManageProductTags", Category = "Catalog" };
         public static readonly PermissionRecord ManageAttributes = new PermissionRecord { Name = "Admin area. Manage Attributes", SystemName = "ManageAttributes", Category = "Catalog" };
-        public static readonly PermissionRecord ManageCustomers = new PermissionRecord { Name = "Admin area. Manage Customers", SystemName = "ManageCustomers", Category = "Customers" };
-        public static readonly PermissionRecord ManageVendors = new PermissionRecord { Name = "Admin area. Manage Vendors", SystemName = "ManageVendors", Category = "Customers" };
+        public static readonly PermissionRecord ManageUsers = new PermissionRecord { Name = "Admin area. Manage Users", SystemName = "ManageUsers", Category = "Users" };
+        public static readonly PermissionRecord ManageVendors = new PermissionRecord { Name = "Admin area. Manage Vendors", SystemName = "ManageVendors", Category = "Users" };
         public static readonly PermissionRecord ManageCurrentCarts = new PermissionRecord { Name = "Admin area. Manage Current Carts", SystemName = "ManageCurrentCarts", Category = "Orders" };
         public static readonly PermissionRecord ManageOrders = new PermissionRecord { Name = "Admin area. Manage Orders", SystemName = "ManageOrders", Category = "Orders" };
         public static readonly PermissionRecord ManageRecurringPayments = new PermissionRecord { Name = "Admin area. Manage Recurring Payments", SystemName = "ManageRecurringPayments", Category = "Orders" };
@@ -70,14 +70,14 @@ namespace QuGo.Services.Security
             return new[] 
             {
                 AccessAdminPanel,
-                AllowCustomerImpersonation,
+                AllowUserImpersonation,
                 ManageProducts,
                 ManageCategories,
                 ManageManufacturers,
                 ManageProductReviews,
                 ManageProductTags,
                 ManageAttributes,
-                ManageCustomers,
+                ManageUsers,
                 ManageVendors,
                 ManageCurrentCarts,
                 ManageOrders,
@@ -132,14 +132,14 @@ namespace QuGo.Services.Security
                     PermissionRecords = new[] 
                     {
                         AccessAdminPanel,
-                        AllowCustomerImpersonation,
+                        AllowUserImpersonation,
                         ManageProducts,
                         ManageCategories,
                         ManageManufacturers,
                         ManageProductReviews,
                         ManageProductTags,
                         ManageAttributes,
-                        ManageCustomers,
+                        ManageUsers,
                         ManageVendors,
                         ManageCurrentCarts,
                         ManageOrders,
