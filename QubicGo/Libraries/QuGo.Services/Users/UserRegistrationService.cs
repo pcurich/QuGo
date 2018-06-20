@@ -22,7 +22,7 @@ namespace QuGo.Services.Users
         private readonly IEncryptionService _encryptionService;
         private readonly INewsLetterSubscriptionService _newsLetterSubscriptionService;
         private readonly ILocalizationService _localizationService;
-        private readonly IApplicationService _aplicationService;
+        private readonly IApplicationService _applicationService;
         private readonly IGenericAttributeService _genericAttributeService;
         private readonly IWorkContext _workContext;
         private readonly IWorkflowMessageService _workflowMessageService;

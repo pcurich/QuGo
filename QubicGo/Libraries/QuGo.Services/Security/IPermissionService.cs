@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using QuGo.Core.Domain.users;
+using QuGo.Core.Domain.Users;
 using QuGo.Core.Domain.Security;
 
 namespace QuGo.Services.Security
@@ -72,7 +72,7 @@ namespace QuGo.Services.Security
         /// <param name="permission">Permission record</param>
         /// <param name="user">user</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        bool Authorize(PermissionRecord permission, user user);
+        bool Authorize(PermissionRecord permission, User user);
 
         /// <summary>
         /// Authorize permission
@@ -87,6 +87,6 @@ namespace QuGo.Services.Security
         /// <param name="permissionRecordSystemName">Permission record system name</param>
         /// <param name="user">user</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        bool Authorize(string permissionRecordSystemName, user user);
+        bool Authorize(string permissionRecordSystemName, User user);
     }
 }

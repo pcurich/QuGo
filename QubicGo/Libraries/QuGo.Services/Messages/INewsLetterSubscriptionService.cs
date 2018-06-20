@@ -50,7 +50,7 @@ namespace QuGo.Services.Messages
         /// <param name="email">The newsletter subscription email</param>
         /// <param name="storeId">Store identifier</param>
         /// <returns>NewsLetter subscription</returns>
-        NewsLetterSubscription GetNewsLetterSubscriptionByEmailAndStoreId(string email, int storeId);
+        NewsLetterSubscription GetNewsLetterSubscriptionByEmailAndApplicationId(string email, int storeId);
 
         /// <summary>
         /// Gets the newsletter subscription list

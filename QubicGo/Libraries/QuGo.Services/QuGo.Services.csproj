@@ -33,11 +33,33 @@
     <Reference Include="Autofac, Version=4.8.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Autofac.4.8.1\lib\net45\Autofac.dll</HintPath>
     </Reference>
+    <Reference Include="ImageResizer, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageResizer.4.2.5\lib\net45\ImageResizer.dll</HintPath>
+    </Reference>
+    <Reference Include="ImageResizer.Plugins.PrettyGifs, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\ImageResizer.Plugins.PrettyGifs.4.2.5\lib\net45\ImageResizer.Plugins.PrettyGifs.dll</HintPath>
+    </Reference>
+    <Reference Include="MaxMind.Db, Version=2.0.0.0, Culture=neutral, PublicKeyToken=66afa4cc5ae853ac, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MaxMind.Db.2.4.0\lib\net45\MaxMind.Db.dll</HintPath>
+    </Reference>
+    <Reference Include="MaxMind.GeoIP2, Version=3.0.0.0, Culture=neutral, PublicKeyToken=66afa4cc5ae853ac, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\MaxMind.GeoIP2.3.0.0\lib\net45\MaxMind.GeoIP2.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Azure.KeyVault.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.Azure.KeyVault.Core.1.0.0\lib\net40\Microsoft.Azure.KeyVault.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAzure.Storage, Version=9.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\WindowsAzure.Storage.9.2.0\lib\net45\Microsoft.WindowsAzure.Storage.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Linq.Dynamic, Version=1.0.6132.35681, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Linq.Dynamic.1.0.7\lib\net40\System.Linq.Dynamic.dll</HintPath>
     </Reference>
@@ -140,6 +162,13 @@
     <Compile Include="Logging\ILogger.cs" />
     <Compile Include="Logging\LoggingExtensions.cs" />
     <Compile Include="Logging\NullLogger.cs" />
+    <Compile Include="Media\AzurePictureService.cs" />
+    <Compile Include="Media\DownloadService.cs" />
+    <Compile Include="Media\Extensions.cs" />
+    <Compile Include="Media\IDownloadService.cs" />
+    <Compile Include="Media\IPictureService.cs" />
+    <Compile Include="Media\PictureService.cs" />
+    <Compile Include="Media\ResizeType.cs" />
     <Compile Include="Messages\EmailAccountService.cs" />
     <Compile Include="Messages\EmailSender.cs" />
     <Compile Include="Messages\EventPublisherExtensions.cs" />
@@ -170,6 +199,12 @@
     <Compile Include="Security\IPermissionService.cs" />
     <Compile Include="Security\PermissionService.cs" />
     <Compile Include="Security\StandardPermissionProvider.cs" />
+    <Compile Include="Seo\ISitemapGenerator.cs" />
+    <Compile Include="Seo\IUrlRecordService.cs" />
+    <Compile Include="Seo\SeoExtensions.cs" />
+    <Compile Include="Seo\SitemapGenerator.cs" />
+    <Compile Include="Seo\UpdateFrequency.cs" />
+    <Compile Include="Seo\UrlRecordService.cs" />
     <Compile Include="Tasks\IScheduleTaskService.cs" />
     <Compile Include="Tasks\ITask.cs" />
     <Compile Include="Tasks\ScheduleTaskService.cs" />

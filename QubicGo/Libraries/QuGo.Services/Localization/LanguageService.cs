@@ -6,7 +6,7 @@ using QuGo.Core.Data;
 using QuGo.Core.Domain.Localization;
 using QuGo.Services.Configuration;
 using QuGo.Services.Events;
-using QuGo.Services.Stores;
+using QuGo.Services.Applications;
 
 namespace QuGo.Services.Localization
 {
@@ -41,7 +41,7 @@ namespace QuGo.Services.Localization
         #region Fields
 
         private readonly IRepository<Language> _languageRepository;
-        private readonly IStoreMappingService _storeMappingService;
+        private readonly IApplicationMappingService _applicationMappingService;
         private readonly ICacheManager _cacheManager;
         private readonly ISettingService _settingService;
         private readonly LocalizationSettings _localizationSettings;
@@ -56,20 +56,20 @@ namespace QuGo.Services.Localization
         /// </summary>
         /// <param name="cacheManager">Cache manager</param>
         /// <param name="languageRepository">Language repository</param>
-        /// <param name="storeMappingService">Store mapping service</param>
+        /// <param name="applicationMappingService">Application mapping service</param>
         /// <param name="settingService">Setting service</param>
         /// <param name="localizationSettings">Localization settings</param>
         /// <param name="eventPublisher">Event published</param>
         public LanguageService(ICacheManager cacheManager,
             IRepository<Language> languageRepository,
-            IStoreMappingService storeMappingService,
+            IApplicationMappingService applicationMappingService,
             ISettingService settingService,
             LocalizationSettings localizationSettings,
             IEventPublisher eventPublisher)
         {
             this._cacheManager = cacheManager;
             this._languageRepository = languageRepository;
-            this._storeMappingService = storeMappingService;
+            this._applicationMappingService = applicationMappingService;
             this._settingService = settingService;
             this._localizationSettings = localizationSettings;
             this._eventPublisher = eventPublisher;
@@ -114,10 +114,10 @@ namespace QuGo.Services.Localization
         /// <summary>
         /// Gets all languages
         /// </summary>
-        /// <param name="storeId">Load records allowed only in a specified store; pass 0 to load all records</param>
+        /// <param name="applicationId">Load records allowed only in a specified application; pass 0 to load all records</param>
         /// <param name="showHidden">A value indicating whether to show hidden records</param>
         /// <returns>Languages</returns>
-        public virtual IList<Language> GetAllLanguages(bool showHidden = false, int storeId = 0)
+        public virtual IList<Language> GetAllLanguages(bool showHidden = false, int applicationId = 0)
         {
             string key = string.Format(LANGUAGES_ALL_KEY, showHidden);
             var languages = _cacheManager.Get(key, () =>
@@ -129,11 +129,11 @@ namespace QuGo.Services.Localization
                 return query.ToList();
             });
 
-            //store mapping
-            if (storeId > 0)
+            //application mapping
+            if (applicationId > 0)
             {
                 languages = languages
-                    .Where(l => _storeMappingService.Authorize(l, storeId))
+                    .Where(l => _applicationMappingService.Authorize(l, applicationId))
                     .ToList();
             }
             return languages;

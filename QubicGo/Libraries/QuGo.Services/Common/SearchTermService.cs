@@ -66,44 +66,19 @@ namespace QuGo.Services.Common
         /// <param name="keyword">Search term keyword</param>
         /// <param name="storeId">Store identifier</param>
         /// <returns>Search term</returns>
-        public virtual SearchTerm GetSearchTermByKeyword(string keyword, int storeId)
+        public virtual SearchTerm GetSearchTermByKeyword(string keyword, int applicationId)
         {
             if (String.IsNullOrEmpty(keyword))
                 return null;
 
             var query = from st in _searchTermRepository.Table
-                        where st.Keyword == keyword && st.StoreId == storeId
+                        where st.Keyword == keyword && st.ApplicationId == applicationId
                         orderby st.Id
                         select st;
             var searchTerm = query.FirstOrDefault();
             return searchTerm;
         }
-
-        /// <summary>
-        /// Gets a search term statistics
-        /// </summary>
-        /// <param name="pageIndex">Page index</param>
-        /// <param name="pageSize">Page size</param>
-        /// <returns>A list search term report lines</returns>
-        public virtual IPagedList<SearchTermReportLine> GetStats(int pageIndex = 0, int pageSize = int.MaxValue)
-        {
-            var query = (from st in _searchTermRepository.Table
-                        group st by st.Keyword into groupedResult
-                        select new
-                        {
-                            Keyword = groupedResult.Key,
-                            Count = groupedResult.Sum(o => o.Count)
-                        })
-                        .OrderByDescending(m => m.Count)
-                        .Select(r => new SearchTermReportLine
-                        {
-                            Keyword = r.Keyword,
-                            Count = r.Count
-                        });
-
-            var result = new PagedList<SearchTermReportLine>(query, pageIndex, pageSize);
-            return result;
-        }
+ 
 
         /// <summary>
         /// Inserts a search term record

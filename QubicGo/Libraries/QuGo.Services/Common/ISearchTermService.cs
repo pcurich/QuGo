@@ -25,17 +25,9 @@ namespace QuGo.Services.Common
         /// Gets a search term record by keyword
         /// </summary>
         /// <param name="keyword">Search term keyword</param>
-        /// <param name="storeId">Store identifier</param>
+        /// <param name="applicationId">Store identifier</param>
         /// <returns>Search term</returns>
-        SearchTerm GetSearchTermByKeyword(string keyword, int storeId);
-
-        /// <summary>
-        /// Gets a search term statistics
-        /// </summary>
-        /// <param name="pageIndex">Page index</param>
-        /// <param name="pageSize">Page size</param>
-        /// <returns>A list search term report lines</returns>
-        IPagedList<SearchTermReportLine> GetStats(int pageIndex = 0, int pageSize = int.MaxValue);
+        SearchTerm GetSearchTermByKeyword(string keyword, int applicationId);
 
         /// <summary>
         /// Inserts a search term record

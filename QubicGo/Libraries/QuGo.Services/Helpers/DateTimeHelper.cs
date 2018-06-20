@@ -2,7 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using QuGo.Core;
-using QuGo.Core.Domain.users;
+using QuGo.Core.Domain.Users;
 using QuGo.Services.Common;
 using QuGo.Services.Configuration;
 
@@ -146,15 +146,15 @@ namespace QuGo.Services.Helpers
         /// </summary>
         /// <param name="user">user</param>
         /// <returns>user time zone; if user is null, then default store time zone</returns>
-        public virtual TimeZoneInfo GetuserTimeZone(user user)
+        public virtual TimeZoneInfo GetUserTimeZone(User user)
         {
             //registered user
             TimeZoneInfo timeZoneInfo = null;
-            if (_dateTimeSettings.AllowusersToSetTimeZone)
+            if (_dateTimeSettings.AllowUsersToSetTimeZone)
             {
                 string timeZoneId = string.Empty;
                 if (user != null)
-                    timeZoneId = user.GetAttribute<string>(SystemuserAttributeNames.TimeZoneId, _genericAttributeService);
+                    timeZoneId = user.GetAttribute<string>(SystemUserAttributeNames.TimeZoneId, _genericAttributeService);
 
                 try
                 {
@@ -169,7 +169,7 @@ namespace QuGo.Services.Helpers
 
             //default timezone
             if (timeZoneInfo == null)
-                timeZoneInfo = this.DefaultStoreTimeZone;
+                timeZoneInfo = this.DefaultApplicationTimeZone;
 
             return timeZoneInfo;
         }
@@ -177,15 +177,15 @@ namespace QuGo.Services.Helpers
         /// <summary>
         /// Gets or sets a default store time zone
         /// </summary>
-        public virtual TimeZoneInfo DefaultStoreTimeZone
+        public virtual TimeZoneInfo DefaultApplicationTimeZone
         {
             get
             {
                 TimeZoneInfo timeZoneInfo = null;
                 try
                 {
-                    if (!String.IsNullOrEmpty(_dateTimeSettings.DefaultStoreTimeZoneId))
-                        timeZoneInfo = FindTimeZoneById(_dateTimeSettings.DefaultStoreTimeZoneId);
+                    if (!String.IsNullOrEmpty(_dateTimeSettings.DefaultApplicationTimeZoneId))
+                        timeZoneInfo = FindTimeZoneById(_dateTimeSettings.DefaultApplicationTimeZoneId);
                 }
                 catch (Exception exc)
                 {
@@ -205,7 +205,7 @@ namespace QuGo.Services.Helpers
                     defaultTimeZoneId = value.Id;
                 }
 
-                _dateTimeSettings.DefaultStoreTimeZoneId = defaultTimeZoneId;
+                _dateTimeSettings.DefaultApplicationTimeZoneId = defaultTimeZoneId;
                 _settingService.SaveSetting(_dateTimeSettings);
             }
         }
@@ -217,11 +217,11 @@ namespace QuGo.Services.Helpers
         {
             get
             {
-                return GetuserTimeZone(_workContext.Currentuser);
+                return GetUserTimeZone(_workContext.CurrentUser);
             }
             set
             {
-                if (!_dateTimeSettings.AllowusersToSetTimeZone)
+                if (!_dateTimeSettings.AllowUsersToSetTimeZone)
                     return;
 
                 string timeZoneId = string.Empty;
@@ -230,8 +230,8 @@ namespace QuGo.Services.Helpers
                     timeZoneId = value.Id;
                 }
 
-                _genericAttributeService.SaveAttribute(_workContext.Currentuser,
-                    SystemuserAttributeNames.TimeZoneId, timeZoneId);
+                _genericAttributeService.SaveAttribute(_workContext.CurrentUser,
+                    SystemUserAttributeNames.TimeZoneId, timeZoneId);
             }
         }
     }

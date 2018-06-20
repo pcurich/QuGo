@@ -87,7 +87,7 @@ namespace QuGo.Services.Helpers
         /// <summary>
         /// Gets or sets a default store time zone
         /// </summary>
-        TimeZoneInfo DefaultStoreTimeZone { get; set; }
+        TimeZoneInfo DefaultApplicationTimeZone { get; set; }
 
         /// <summary>
         /// Gets or sets the current user time zone

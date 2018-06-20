@@ -78,7 +78,7 @@ namespace QuGo.Services.Security
         /// <param name="permissionRecordSystemName">Permission record system name</param>
         /// <param name="userRole">user role</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        protected virtual bool Authorize(string permissionRecordSystemName, userRole userRole)
+        protected virtual bool Authorize(string permissionRecordSystemName, UserRole userRole)
         {
             if (String.IsNullOrEmpty(permissionRecordSystemName))
                 return false;
@@ -211,17 +211,17 @@ namespace QuGo.Services.Security
                     var defaultPermissions = permissionProvider.GetDefaultPermissions();
                     foreach (var defaultPermission in defaultPermissions)
                     {
-                        var userRole = _userService.GetuserRoleBySystemName(defaultPermission.userRoleSystemName);
+                        var userRole = _userService.GetUserRoleBySystemName(defaultPermission.UserRoleSystemName);
                         if (userRole == null)
                         {
                             //new role (save it)
-                            userRole = new userRole
+                            userRole = new UserRole
                             {
-                                Name = defaultPermission.userRoleSystemName,
+                                Name = defaultPermission.UserRoleSystemName,
                                 Active = true,
-                                SystemName = defaultPermission.userRoleSystemName
+                                SystemName = defaultPermission.UserRoleSystemName
                             };
-                            _userService.InsertuserRole(userRole);
+                            _userService.InsertUserRole(userRole);
                         }
 
 
@@ -233,7 +233,7 @@ namespace QuGo.Services.Security
                                              select p).Any();
                         if (defaultMappingProvided && !mappingExists)
                         {
-                            permission1.userRoles.Add(userRole);
+                            permission1.UserRoles.Add(userRole);
                         }
                     }
 
@@ -274,7 +274,7 @@ namespace QuGo.Services.Security
         /// <returns>true - authorized; otherwise, false</returns>
         public virtual bool Authorize(PermissionRecord permission)
         {
-            return Authorize(permission, _workContext.Currentuser);
+            return Authorize(permission, _workContext.CurrentUser);
         }
 
         /// <summary>
@@ -283,7 +283,7 @@ namespace QuGo.Services.Security
         /// <param name="permission">Permission record</param>
         /// <param name="user">user</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        public virtual bool Authorize(PermissionRecord permission, user user)
+        public virtual bool Authorize(PermissionRecord permission, User user)
         {
             if (permission == null)
                 return false;
@@ -310,7 +310,7 @@ namespace QuGo.Services.Security
         /// <returns>true - authorized; otherwise, false</returns>
         public virtual bool Authorize(string permissionRecordSystemName)
         {
-            return Authorize(permissionRecordSystemName, _workContext.Currentuser);
+            return Authorize(permissionRecordSystemName, _workContext.CurrentUser);
         }
 
         /// <summary>
@@ -319,12 +319,12 @@ namespace QuGo.Services.Security
         /// <param name="permissionRecordSystemName">Permission record system name</param>
         /// <param name="user">user</param>
         /// <returns>true - authorized; otherwise, false</returns>
-        public virtual bool Authorize(string permissionRecordSystemName, user user)
+        public virtual bool Authorize(string permissionRecordSystemName, User user)
         {
             if (String.IsNullOrEmpty(permissionRecordSystemName))
                 return false;
 
-            var userRoles = user.userRoles.Where(cr => cr.Active);
+            var userRoles = user.UserRoles.Where(cr => cr.Active);
             foreach (var role in userRoles)
                 if (Authorize(permissionRecordSystemName, role))
                     //yes, we have such permission
