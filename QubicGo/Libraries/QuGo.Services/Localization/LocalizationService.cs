@@ -330,7 +330,7 @@ namespace QuGo.Services.Localization
             xmlWriter.WriteStartDocument();
             xmlWriter.WriteStartElement("Language");
             xmlWriter.WriteAttributeString("Name", language.Name);
-            xmlWriter.WriteAttributeString("SupportedVersion", QuGo.ersion.CurrentVersion);
+            xmlWriter.WriteAttributeString("SupportedVersion", SysVersion.CurrentVersion);
 
 
             var resources = GetAllResources(language.Id);

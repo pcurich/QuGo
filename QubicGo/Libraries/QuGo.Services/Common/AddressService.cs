@@ -33,6 +33,7 @@ namespace QuGo.Services.Common
         private readonly IRepository<Address> _addressRepository;
         private readonly ICountryService _countryService;
         private readonly IStateProvinceService _stateProvinceService;
+        private readonly ICityService _cityService;
         private readonly IAddressAttributeService _addressAttributeService;
         private readonly IEventPublisher _eventPublisher;
         private readonly AddressSettings _addressSettings;
@@ -49,6 +50,7 @@ namespace QuGo.Services.Common
         /// <param name="addressRepository">Address repository</param>
         /// <param name="countryService">Country service</param>
         /// <param name="stateProvinceService">State/province service</param>
+        /// <param name="cityService">city service</param>
         /// <param name="addressAttributeService">Address attribute service</param>
         /// <param name="eventPublisher">Event publisher</param>
         /// <param name="addressSettings">Address settings</param>
@@ -56,6 +58,7 @@ namespace QuGo.Services.Common
             IRepository<Address> addressRepository,
             ICountryService countryService, 
             IStateProvinceService stateProvinceService,
+            ICityService cityService,
             IAddressAttributeService addressAttributeService,
             IEventPublisher eventPublisher, 
             AddressSettings addressSettings)
@@ -64,6 +67,7 @@ namespace QuGo.Services.Common
             this._addressRepository = addressRepository;
             this._countryService = countryService;
             this._stateProvinceService = stateProvinceService;
+            this._cityService = cityService;
             this._addressAttributeService = addressAttributeService;
             this._eventPublisher = eventPublisher;
             this._addressSettings = addressSettings;
@@ -247,15 +251,24 @@ namespace QuGo.Services.Common
                         var state = states.FirstOrDefault(x => x.Id == address.StateProvinceId.Value);
                         if (state == null)
                             return false;
+
+                        if (_addressSettings.CityEnabled)
+                        {
+                            var cities = _cityService.GetCityByStateProvinceId(state.Id);
+                            if (cities.Any())
+                            {
+                                if (address.CityId == null || address.CityId.Value == 0)
+                                    return false;
+
+                                var city = cities.FirstOrDefault(x => x.Id == address.CityId.Value);
+                                if (city == null)
+                                    return false;
+                            }
+                        }
                     }
                 }
             }
-
-            if (_addressSettings.CityEnabled &&
-                _addressSettings.CityRequired &&
-                String.IsNullOrWhiteSpace(address.City))
-                return false;
-
+                 
             if (_addressSettings.PhoneEnabled &&
                 _addressSettings.PhoneRequired &&
                 String.IsNullOrWhiteSpace(address.PhoneNumber))

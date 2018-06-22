@@ -120,9 +120,11 @@
     <Compile Include="Configuration\ISettingService.cs" />
     <Compile Include="Configuration\SettingExtensions.cs" />
     <Compile Include="Configuration\SettingService.cs" />
+    <Compile Include="Directory\CityService.cs" />
     <Compile Include="Directory\CountryService.cs" />
     <Compile Include="Directory\CurrencyService.cs" />
     <Compile Include="Directory\GeoLookupService.cs" />
+    <Compile Include="Directory\ICityService.cs" />
     <Compile Include="Directory\ICountryService.cs" />
     <Compile Include="Directory\ICurrencyService.cs" />
     <Compile Include="Directory\IExchangeRateProvider.cs" />

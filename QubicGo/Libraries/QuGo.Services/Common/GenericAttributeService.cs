@@ -175,8 +175,8 @@ namespace QuGo.Services.Common
         /// <param name="entity">Entity</param>
         /// <param name="key">Key</param>
         /// <param name="value">Value</param>
-        /// <param name="storeId">Store identifier; pass 0 if this attribute will be available for all stores</param>
-        public virtual void SaveAttribute<TPropType>(BaseEntity entity, string key, TPropType value, int storeId = 0)
+        /// <param name="aplicationId">Aplication identifier; pass 0 if this attribute will be available for all applications</param>
+        public virtual void SaveAttribute<TPropType>(BaseEntity entity, string key, TPropType value, int aplicationId = 0)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
@@ -187,7 +187,7 @@ namespace QuGo.Services.Common
             string keyGroup = entity.GetUnproxiedEntityType().Name;
 
             var props = GetAttributesForEntity(entity.Id, keyGroup)
-                .Where(x => x.StoreId == storeId)
+                .Where(x => x.AplicationId == aplicationId)
                 .ToList();
             var prop = props.FirstOrDefault(ga =>
                 ga.Key.Equals(key, StringComparison.InvariantCultureIgnoreCase)); //should be culture invariant
@@ -219,7 +219,7 @@ namespace QuGo.Services.Common
                         Key = key,
                         KeyGroup = keyGroup,
                         Value = valueStr,
-                        StoreId = storeId,
+                        AplicationId = aplicationId,
                         
                     };
                     InsertAttribute(prop);

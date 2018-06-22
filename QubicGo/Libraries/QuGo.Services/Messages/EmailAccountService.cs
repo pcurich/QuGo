@@ -101,7 +101,7 @@ namespace QuGo.Services.Messages
                 throw new ArgumentNullException("emailAccount");
 
             if (GetAllEmailAccounts().Count == 1)
-                throw new QuGo.xception("You cannot delete this email account. At least one account is required.");
+                throw new SysException("You cannot delete this email account. At least one account is required.");
 
             _emailAccountRepository.Delete(emailAccount);
 

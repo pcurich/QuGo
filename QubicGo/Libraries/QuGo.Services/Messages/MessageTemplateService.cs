@@ -5,10 +5,10 @@ using QuGo.Core.Caching;
 using QuGo.Core.Data;
 using QuGo.Core.Domain.Catalog;
 using QuGo.Core.Domain.Messages;
-using QuGo.Core.Domain.Stores;
+using QuGo.Core.Domain.Applications;
 using QuGo.Services.Events;
-using QuGo.Services.Localization;
-using QuGo.Services.Stores;
+using QuGo.Services.Localization; 
+using QuGo.Services.Applications;
 
 namespace QuGo.Services.Messages
 {
@@ -20,7 +20,7 @@ namespace QuGo.Services.Messages
         /// Key for caching
         /// </summary>
         /// <remarks>
-        /// {0} : store ID
+        /// {0} : application ID
         /// </remarks>
         private const string MESSAGETEMPLATES_ALL_KEY = "QuGo.messagetemplate.all-{0}";
         /// <summary>
@@ -28,7 +28,7 @@ namespace QuGo.Services.Messages
         /// </summary>
         /// <remarks>
         /// {0} : template name
-        /// {1} : store ID
+        /// {1} : application ID
         /// </remarks>
         private const string MESSAGETEMPLATES_BY_NAME_KEY = "QuGo.messagetemplate.name-{0}-{1}";
         /// <summary>
@@ -41,9 +41,9 @@ namespace QuGo.Services.Messages
         #region Fields
 
         private readonly IRepository<MessageTemplate> _messageTemplateRepository;
-        private readonly IRepository<StoreMapping> _storeMappingRepository;
+        private readonly IRepository<ApplicationMapping> _applicationMappingRepository;
         private readonly ILanguageService _languageService;
-        private readonly IStoreMappingService _storeMappingService;
+        private readonly IApplicationMappingService _applicationMappingService;
         private readonly ILocalizedEntityService _localizedEntityService;
         private readonly CatalogSettings _catalogSettings;
         private readonly IEventPublisher _eventPublisher;
@@ -57,27 +57,27 @@ namespace QuGo.Services.Messages
         /// Ctor
         /// </summary>
         /// <param name="cacheManager">Cache manager</param>
-        /// <param name="storeMappingRepository">Store mapping repository</param>
+        /// <param name="applicationMappingRepository">Application mapping repository</param>
         /// <param name="languageService">Language service</param>
         /// <param name="localizedEntityService">Localized entity service</param>
-        /// <param name="storeMappingService">Store mapping service</param>
+        /// <param name="applicationMappingService">Application mapping service</param>
         /// <param name="messageTemplateRepository">Message template repository</param>
         /// <param name="catalogSettings">Catalog settings</param>
         /// <param name="eventPublisher">Event published</param>
         public MessageTemplateService(ICacheManager cacheManager,
-            IRepository<StoreMapping> storeMappingRepository,
+            IRepository<ApplicationMapping> applicationMappingRepository,
             ILanguageService languageService,
             ILocalizedEntityService localizedEntityService,
-            IStoreMappingService storeMappingService,
+            IApplicationMappingService applicationMappingService,
             IRepository<MessageTemplate> messageTemplateRepository,
             CatalogSettings catalogSettings,
             IEventPublisher eventPublisher)
         {
             this._cacheManager = cacheManager;
-            this._storeMappingRepository = storeMappingRepository;
+            this._applicationMappingRepository = applicationMappingRepository;
             this._languageService = languageService;
             this._localizedEntityService = localizedEntityService;
-            this._storeMappingService = storeMappingService;
+            this._applicationMappingService = applicationMappingService;
             this._messageTemplateRepository = messageTemplateRepository;
             this._catalogSettings = catalogSettings;
             this._eventPublisher = eventPublisher;
@@ -155,14 +155,14 @@ namespace QuGo.Services.Messages
         /// Gets a message template
         /// </summary>
         /// <param name="messageTemplateName">Message template name</param>
-        /// <param name="storeId">Store identifier</param>
+        /// <param name="applicationId">Application identifier</param>
         /// <returns>Message template</returns>
-        public virtual MessageTemplate GetMessageTemplateByName(string messageTemplateName, int storeId)
+        public virtual MessageTemplate GetMessageTemplateByName(string messageTemplateName, int applicationId)
         {
             if (string.IsNullOrWhiteSpace(messageTemplateName))
                 throw new ArgumentException("messageTemplateName");
 
-            string key = string.Format(MESSAGETEMPLATES_BY_NAME_KEY, messageTemplateName, storeId);
+            string key = string.Format(MESSAGETEMPLATES_BY_NAME_KEY, messageTemplateName, applicationId);
             return _cacheManager.Get(key, () =>
             {
                 var query = _messageTemplateRepository.Table;
@@ -170,11 +170,11 @@ namespace QuGo.Services.Messages
                 query = query.OrderBy(t => t.Id);
                 var templates = query.ToList();
 
-                //store mapping
-                if (storeId > 0)
+                //application mapping
+                if (applicationId > 0)
                 {
                     templates = templates
-                        .Where(t => _storeMappingService.Authorize(t, storeId))
+                        .Where(t => _applicationMappingService.Authorize(t, applicationId))
                         .ToList();
                 }
 
@@ -186,24 +186,24 @@ namespace QuGo.Services.Messages
         /// <summary>
         /// Gets all message templates
         /// </summary>
-        /// <param name="storeId">Store identifier; pass 0 to load all records</param>
+        /// <param name="applicationId">Application identifier; pass 0 to load all records</param>
         /// <returns>Message template list</returns>
-        public virtual IList<MessageTemplate> GetAllMessageTemplates(int storeId)
+        public virtual IList<MessageTemplate> GetAllMessageTemplates(int applicationId)
         {
-            string key = string.Format(MESSAGETEMPLATES_ALL_KEY, storeId);
+            string key = string.Format(MESSAGETEMPLATES_ALL_KEY, applicationId);
             return _cacheManager.Get(key, () =>
             {
                 var query = _messageTemplateRepository.Table;
                 query = query.OrderBy(t => t.Name);
 
-                //Store mapping
-                if (storeId > 0 && !_catalogSettings.IgnoreStoreLimitations)
+                //Application mapping
+                if (applicationId > 0 && !_catalogSettings.IgnoreApplicationLimitations)
                 {
                     query = from t in query
-                            join sm in _storeMappingRepository.Table
+                            join sm in _applicationMappingRepository.Table
                             on new { c1 = t.Id, c2 = "MessageTemplate" } equals new { c1 = sm.EntityId, c2 = sm.EntityName } into t_sm
                             from sm in t_sm.DefaultIfEmpty()
-                            where !t.LimitedToStores || storeId == sm.StoreId
+                            where !t.LimitedToApplications || applicationId == sm.ApplicationId
                             select t;
 
                     //only distinct items (group by ID)
@@ -238,7 +238,7 @@ namespace QuGo.Services.Messages
                 IsActive = messageTemplate.IsActive,
                 AttachedDownloadId = messageTemplate.AttachedDownloadId,
                 EmailAccountId = messageTemplate.EmailAccountId,
-                LimitedToStores = messageTemplate.LimitedToStores,
+                LimitedToApplications = messageTemplate.LimitedToApplications,
                 DelayBeforeSend = messageTemplate.DelayBeforeSend,
                 DelayPeriod = messageTemplate.DelayPeriod
             };
@@ -267,11 +267,11 @@ namespace QuGo.Services.Messages
                     _localizedEntityService.SaveLocalizedValue(mtCopy, x => x.EmailAccountId, emailAccountId, lang.Id);
             }
 
-            //store mapping
-            var selectedStoreIds = _storeMappingService.GetStoresIdsWithAccess(messageTemplate);
-            foreach (var id in selectedStoreIds)
+            //application mapping
+            var selectedApplicationIds = _applicationMappingService.GetApplicationsIdsWithAccess(messageTemplate);
+            foreach (var id in selectedApplicationIds)
             {
-                _storeMappingService.InsertStoreMapping(mtCopy, id);
+                _applicationMappingService.InsertApplicationMapping(mtCopy, id);
             }
 
             return mtCopy;

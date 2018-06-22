@@ -15,7 +15,12 @@ namespace QuGo.Core.Domain.Common
         /// Gets or sets the name
         /// </summary>
         public string Name { get; set; }
- 
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the attribute is required
+        /// </summary>
+        public bool IsRequired { get; set; }
+
         /// <summary>
         /// Gets or sets the attribute control type identifier
         /// </summary>

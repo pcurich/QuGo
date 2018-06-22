@@ -16,10 +16,10 @@ namespace QuGo.Services.Common
         /// <param name="key">Key</param>
         /// <param name="storeId">Load a value specific for a certain store; pass 0 to load a value shared for all stores</param>
         /// <returns>Attribute</returns>
-        public static TPropType GetAttribute<TPropType>(this BaseEntity entity, string key, int storeId = 0)
+        public static TPropType GetAttribute<TPropType>(this BaseEntity entity, string key, int aplicationId = 0)
         {
             var genericAttributeService = EngineContext.Current.Resolve<IGenericAttributeService>();
-            return GetAttribute<TPropType>(entity, key, genericAttributeService, storeId);
+            return GetAttribute<TPropType>(entity, key, genericAttributeService, aplicationId);
         }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace QuGo.Services.Common
         /// <param name="storeId">Load a value specific for a certain store; pass 0 to load a value shared for all stores</param>
         /// <returns>Attribute</returns>
         public static TPropType GetAttribute<TPropType>(this BaseEntity entity,
-            string key, IGenericAttributeService genericAttributeService, int storeId = 0)
+            string key, IGenericAttributeService genericAttributeService, int aplicationId = 0)
         {
             if (entity == null)
                 throw new ArgumentNullException("entity");
@@ -43,7 +43,7 @@ namespace QuGo.Services.Common
             //little hack here (only for unit testing). we should write ecpect-return rules in unit tests for such cases
             if (props == null)
                 return default(TPropType);
-            props = props.Where(x => x.StoreId == storeId).ToList();
+            props = props.Where(x => x.AplicationId == aplicationId).ToList();
             if (!props.Any())
                 return default(TPropType);
 

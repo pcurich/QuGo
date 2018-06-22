@@ -38,7 +38,8 @@ namespace QuGo.Services.Security
         private readonly IRepository<AclRecord> _aclRecordRepository;
         private readonly IWorkContext _workContext;
         private readonly ICacheManager _cacheManager;
-        private readonly IEventPublisher _eventPublisher; 
+        private readonly IEventPublisher _eventPublisher;
+        private readonly CatalogSettings _catalogSettings;
 
         #endregion
 
@@ -55,12 +56,14 @@ namespace QuGo.Services.Security
         public AclService(ICacheManager cacheManager, 
             IWorkContext workContext,
             IRepository<AclRecord> aclRecordRepository,
-            IEventPublisher eventPublisher )
+            IEventPublisher eventPublisher,
+            CatalogSettings catalogSettings)
         {
             this._cacheManager = cacheManager;
             this._workContext = workContext;
             this._aclRecordRepository = aclRecordRepository;
-            this._eventPublisher = eventPublisher; 
+            this._eventPublisher = eventPublisher;
+            this._catalogSettings = catalogSettings;
         }
 
         #endregion

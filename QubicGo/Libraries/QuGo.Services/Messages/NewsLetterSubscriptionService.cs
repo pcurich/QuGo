@@ -2,10 +2,10 @@ using System;
 using System.Linq;
 using QuGo.Core;
 using QuGo.Core.Data;
-using QuGo.Core.Domain.Customers;
+using QuGo.Core.Domain.Users;
 using QuGo.Core.Domain.Messages;
 using QuGo.Data;
-using QuGo.Services.Customers;
+using QuGo.Services.Users;
 using QuGo.Services.Events;
 
 namespace QuGo.Services.Messages
@@ -20,8 +20,8 @@ namespace QuGo.Services.Messages
         private readonly IEventPublisher _eventPublisher;
         private readonly IDbContext _context;
         private readonly IRepository<NewsLetterSubscription> _subscriptionRepository;
-        private readonly IRepository<Customer> _customerRepository;
-        private readonly ICustomerService _customerService;
+        private readonly IRepository<User> _userRepository;
+        private readonly IUserService _userService;
 
         #endregion
 
@@ -29,15 +29,15 @@ namespace QuGo.Services.Messages
 
         public NewsLetterSubscriptionService(IDbContext context,
             IRepository<NewsLetterSubscription> subscriptionRepository,
-            IRepository<Customer> customerRepository,
+            IRepository<User> userRepository,
             IEventPublisher eventPublisher,
-            ICustomerService customerService)
+            IUserService userService)
         {
             this._context = context;
             this._subscriptionRepository = subscriptionRepository;
-            this._customerRepository = customerRepository;
+            this._userRepository = userRepository;
             this._eventPublisher = eventPublisher;
-            this._customerService = customerService;
+            this._userService = userService;
         }
 
         #endregion
@@ -190,12 +190,12 @@ namespace QuGo.Services.Messages
         }
 
         /// <summary>
-        /// Gets a newsletter subscription by email and store ID
+        /// Gets a newsletter subscription by email and application ID
         /// </summary>
         /// <param name="email">The newsletter subscription email</param>
-        /// <param name="storeId">Store identifier</param>
+        /// <param name="applicationId">Application identifier</param>
         /// <returns>NewsLetter subscription</returns>
-        public virtual NewsLetterSubscription GetNewsLetterSubscriptionByEmailAndStoreId(string email, int storeId)
+        public virtual NewsLetterSubscription GetNewsLetterSubscriptionByEmailAndApplicationId(string email, int applicationId)
         {
             if (!CommonHelper.IsValidEmail(email)) 
                 return null;
@@ -203,7 +203,7 @@ namespace QuGo.Services.Messages
             email = email.Trim();
 
             var newsLetterSubscriptions = from nls in _subscriptionRepository.Table
-                                          where nls.Email == email && nls.StoreId == storeId
+                                          where nls.Email == email && nls.ApplicationId == applicationId
                                           orderby nls.Id
                                           select nls;
 
@@ -216,20 +216,20 @@ namespace QuGo.Services.Messages
         /// <param name="email">Email to search or string. Empty to load all records.</param>
         /// <param name="createdFromUtc">Created date from (UTC); null to load all records</param>
         /// <param name="createdToUtc">Created date to (UTC); null to load all records</param>
-        /// <param name="storeId">Store identifier. 0 to load all records.</param>
-        /// <param name="customerRoleId">Customer role identifier. Used to filter subscribers by customer role. 0 to load all records.</param>
+        /// <param name="applicationId">Application identifier. 0 to load all records.</param>
+        /// <param name="userRoleId">User role identifier. Used to filter subscribers by user role. 0 to load all records.</param>
         /// <param name="isActive">Value indicating whether subscriber record should be active or not; null to load all records</param>
         /// <param name="pageIndex">Page index</param>
         /// <param name="pageSize">Page size</param>
         /// <returns>NewsLetterSubscription entities</returns>
         public virtual IPagedList<NewsLetterSubscription> GetAllNewsLetterSubscriptions(string email = null,
             DateTime? createdFromUtc = null, DateTime? createdToUtc = null,
-            int storeId = 0, bool? isActive = null, int customerRoleId = 0,
+            int applicationId = 0, bool? isActive = null, int userRoleId = 0,
             int pageIndex = 0, int pageSize = int.MaxValue)
         {
-            if (customerRoleId == 0)
+            if (userRoleId == 0)
             {
-                //do not filter by customer role
+                //do not filter by user role
                 var query = _subscriptionRepository.Table;
                 if (!String.IsNullOrEmpty(email))
                     query = query.Where(nls => nls.Email.Contains(email));
@@ -237,8 +237,8 @@ namespace QuGo.Services.Messages
                     query = query.Where(nls => nls.CreatedOnUtc >= createdFromUtc.Value);
                 if (createdToUtc.HasValue)
                     query = query.Where(nls => nls.CreatedOnUtc <= createdToUtc.Value);
-                if (storeId > 0)
-                    query = query.Where(nls => nls.StoreId == storeId);
+                if (applicationId > 0)
+                    query = query.Where(nls => nls.ApplicationId == applicationId);
                 if (isActive.HasValue)
                     query = query.Where(nls => nls.Active == isActive.Value);
                 query = query.OrderBy(nls => nls.Email);
@@ -248,12 +248,12 @@ namespace QuGo.Services.Messages
             }
             else
             {
-                //filter by customer role
-                var guestRole = _customerService.GetCustomerRoleBySystemName(SystemCustomerRoleNames.Guests);
+                //filter by user role
+                var guestRole = _userService.GetUserRoleBySystemName(SystemUserRoleNames.Guests);
                 if (guestRole == null)
-                    throw new QuGo.xception("'Guests' role could not be loaded");
+                    throw new SysException("'Guests' role could not be loaded");
 
-                if (guestRole.Id == customerRoleId)
+                if (guestRole.Id == userRoleId)
                 {
                     //guests
                     var query = _subscriptionRepository.Table;
@@ -263,11 +263,11 @@ namespace QuGo.Services.Messages
                         query = query.Where(nls => nls.CreatedOnUtc >= createdFromUtc.Value);
                     if (createdToUtc.HasValue)
                         query = query.Where(nls => nls.CreatedOnUtc <= createdToUtc.Value);
-                    if (storeId > 0)
-                        query = query.Where(nls => nls.StoreId == storeId);
+                    if (applicationId > 0)
+                        query = query.Where(nls => nls.ApplicationId == applicationId);
                     if (isActive.HasValue)
                         query = query.Where(nls => nls.Active == isActive.Value);
-                    query = query.Where(nls => !_customerRepository.Table.Any(c => c.Email == nls.Email));
+                    query = query.Where(nls => !_userRepository.Table.Any(c => c.Email == nls.Email));
                     query = query.OrderBy(nls => nls.Email);
                     
                     var subscriptions = new PagedList<NewsLetterSubscription>(query, pageIndex, pageSize);
@@ -275,24 +275,24 @@ namespace QuGo.Services.Messages
                 }
                 else
                 {
-                    //other customer roles (not guests)
-                    var query = _subscriptionRepository.Table.Join(_customerRepository.Table,
+                    //other user roles (not guests)
+                    var query = _subscriptionRepository.Table.Join(_userRepository.Table,
                         nls => nls.Email,
                         c => c.Email,
                         (nls, c) => new
                         {
                             NewsletterSubscribers = nls,
-                            Customer = c
+                            User = c
                         });
-                    query = query.Where(x => x.Customer.CustomerRoles.Any(cr => cr.Id == customerRoleId));
+                    query = query.Where(x => x.User.UserRoles.Any(cr => cr.Id == userRoleId));
                     if (!String.IsNullOrEmpty(email))
                         query = query.Where(x => x.NewsletterSubscribers.Email.Contains(email));
                     if (createdFromUtc.HasValue)
                         query = query.Where(x => x.NewsletterSubscribers.CreatedOnUtc >= createdFromUtc.Value);
                     if (createdToUtc.HasValue)
                         query = query.Where(x => x.NewsletterSubscribers.CreatedOnUtc <= createdToUtc.Value);
-                    if (storeId > 0)
-                        query = query.Where(x => x.NewsletterSubscribers.StoreId == storeId);
+                    if (applicationId > 0)
+                        query = query.Where(x => x.NewsletterSubscribers.ApplicationId == applicationId);
                     if (isActive.HasValue)
                         query = query.Where(x => x.NewsletterSubscribers.Active == isActive.Value);
                     query = query.OrderBy(x => x.NewsletterSubscribers.Email);

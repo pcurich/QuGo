@@ -11,6 +11,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuGo.Data", "Libraries\QuGo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuGo.Services", "Libraries\QuGo.Services\QuGo.Services.csproj", "{CC06D478-6D1B-45F6-A5C3-41EC7C1EF4D0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{D3B8F675-9D0E-41D1-B823-D966521C2F2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{0404DE46-4B0C-4CE1-BA79-6D77E4CB040A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuGo.Web.Framework", "Presentation\QuGo.Web.Framework\QuGo.Web.Framework.csproj", "{283E985A-8FBA-4DC5-8D22-02C29D8D1AC6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +35,10 @@ Global
 		{CC06D478-6D1B-45F6-A5C3-41EC7C1EF4D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CC06D478-6D1B-45F6-A5C3-41EC7C1EF4D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CC06D478-6D1B-45F6-A5C3-41EC7C1EF4D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{283E985A-8FBA-4DC5-8D22-02C29D8D1AC6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{283E985A-8FBA-4DC5-8D22-02C29D8D1AC6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{283E985A-8FBA-4DC5-8D22-02C29D8D1AC6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{283E985A-8FBA-4DC5-8D22-02C29D8D1AC6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +47,7 @@ Global
 		{02F5F9B1-357A-439B-810E-9C0F50543B30} = {47E396E5-B758-4B7D-AC0E-49020994A5A3}
 		{E4737EB2-F213-48D3-A78B-C8D44A32FC99} = {47E396E5-B758-4B7D-AC0E-49020994A5A3}
 		{CC06D478-6D1B-45F6-A5C3-41EC7C1EF4D0} = {47E396E5-B758-4B7D-AC0E-49020994A5A3}
+		{283E985A-8FBA-4DC5-8D22-02C29D8D1AC6} = {D3B8F675-9D0E-41D1-B823-D966521C2F2B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1A95D2BE-570D-48A8-BA29-25D8B474E024}

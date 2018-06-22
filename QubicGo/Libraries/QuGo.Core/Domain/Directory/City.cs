@@ -10,7 +10,7 @@ namespace QuGo.Core.Domain.Directory
     /// <summary>
     /// Represents a city
     /// </summary>
-    public partial class City : BaseEntity, ILocalizedEntity 
+    public partial class City : BaseEntity, ILocalizedEntity
     {
         /// <summary>
         /// Gets or sets the StateProvince identifier

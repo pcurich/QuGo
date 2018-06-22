@@ -234,7 +234,7 @@ namespace QuGo.Services.Directory
             {
                 decimal exchangeRatio = sourceMeasureDimension.Ratio;
                 if (exchangeRatio == decimal.Zero)
-                    throw new QuGo.xception(string.Format("Exchange ratio not set for dimension [{0}]", sourceMeasureDimension.Name));
+                    throw new SysException(string.Format("Exchange ratio not set for dimension [{0}]", sourceMeasureDimension.Name));
                 result = result / exchangeRatio;
             }
             return result;
@@ -258,7 +258,7 @@ namespace QuGo.Services.Directory
             {
                 decimal exchangeRatio = targetMeasureDimension.Ratio;
                 if (exchangeRatio == decimal.Zero)
-                    throw new QuGo.xception(string.Format("Exchange ratio not set for dimension [{0}]", targetMeasureDimension.Name));
+                    throw new SysException(string.Format("Exchange ratio not set for dimension [{0}]", targetMeasureDimension.Name));
                 result = result * exchangeRatio;
             }
             return result;
@@ -412,7 +412,7 @@ namespace QuGo.Services.Directory
             {
                 decimal exchangeRatio = sourceMeasureWeight.Ratio;
                 if (exchangeRatio == decimal.Zero)
-                    throw new QuGo.xception(string.Format("Exchange ratio not set for weight [{0}]", sourceMeasureWeight.Name));
+                    throw new SysException(string.Format("Exchange ratio not set for weight [{0}]", sourceMeasureWeight.Name));
                 result = result / exchangeRatio;
             }
             return result;
@@ -436,7 +436,7 @@ namespace QuGo.Services.Directory
             {
                 decimal exchangeRatio = targetMeasureWeight.Ratio;
                 if (exchangeRatio == decimal.Zero)
-                    throw new QuGo.xception(string.Format("Exchange ratio not set for weight [{0}]", targetMeasureWeight.Name));
+                    throw new SysException(string.Format("Exchange ratio not set for weight [{0}]", targetMeasureWeight.Name));
                 result = result * exchangeRatio;
             }
             return result;

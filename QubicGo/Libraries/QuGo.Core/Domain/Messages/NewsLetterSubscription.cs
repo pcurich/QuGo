@@ -25,7 +25,7 @@ namespace QuGo.Core.Domain.Messages
         /// <summary>
         /// Gets or sets the store identifier in which a customer has subscribed to newsletter
         /// </summary>
-        public int StoreId { get; set; }
+        public int ApplicationId { get; set; }
 
         /// <summary>
         /// Gets or sets the date and time when subscription was created

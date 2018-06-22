@@ -66,7 +66,7 @@ namespace QuGo.Services.Directory
             this._cacheManager = cacheManager;
             this._countryRepository = countryRepository;
             this._applicationMappingRepository = applicationMappingRepository;
-            this._applicationContext = sysContext;
+            this._sysContext = sysContext;
             this._catalogSettings = catalogSettings;
             this._eventPublisher = eventPublisher;
         }
