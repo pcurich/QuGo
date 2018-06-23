@@ -95,7 +95,6 @@
     <Compile Include="Applications\ApplicationService.cs" />
     <Compile Include="Applications\IApplicationMappingService.cs" />
     <Compile Include="Applications\IApplicationService.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="Common\AddressAttributeExtensions.cs" />
     <Compile Include="Common\AddressAttributeFormatter.cs" />
     <Compile Include="Common\AddressAttributeParser.cs" />
