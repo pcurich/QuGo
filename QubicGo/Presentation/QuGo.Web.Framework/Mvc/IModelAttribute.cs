@@ -1,4 +1,4 @@
-﻿namespace Nop.Web.Framework.Mvc
+﻿namespace QuGo.Web.Framework.Mvc
 {
     public interface IModelAttribute
     {

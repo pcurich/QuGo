@@ -1,10 +1,10 @@
 ﻿using System;
 using Autofac;
-using Nop.Core.Data;
-using Nop.Core.Infrastructure.DependencyManagement;
-using Nop.Data;
+using QuGo.Core.Data;
+using QuGo.Core.Infrastructure.DependencyManagement;
+using QuGo.Data;
 
-namespace Nop.Web.Framework.Mvc
+namespace QuGo.Web.Framework.Mvc
 {
     /// <summary>
     /// Extensions for DependencyRegistrar

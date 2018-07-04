@@ -258,6 +258,8 @@
     <Compile Include="Domain\Seo\UrlRecord.cs" />
     <Compile Include="Domain\Seo\WwwRequirement.cs" />
     <Compile Include="Domain\Tasks\ScheduleTask.cs" />
+    <Compile Include="Domain\Topics\Topic.cs" />
+    <Compile Include="Domain\Topics\TopicTemplate.cs" />
     <Compile Include="Domain\Users\User.cs" />
     <Compile Include="Domain\Users\UserAttribute.cs" />
     <Compile Include="Domain\Users\UserAttributeValue.cs" />

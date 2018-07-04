@@ -13,6 +13,8 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.Routing;
 using System.Web.WebPages;
+using QuGo.Core;
+using QuGo.Web.Framework.Mvc;
 
 
 namespace QuGo.Web.Framework
@@ -25,14 +27,14 @@ namespace QuGo.Web.Framework
             string name,
             Func<int, HelperResult> localizedTemplate,
             Func<T, HelperResult> standardTemplate,
-            bool ignoreIfSeveralStores = false)
+            bool ignoreIfSeveralApplications = false)
             where T : ILocalizedModel<TLocalizedModelLocal>
             where TLocalizedModelLocal : ILocalizedModelLocal
         {
             return new HelperResult(writer =>
             {
                 var localizationSupported = helper.ViewData.Model.Locales.Count > 1;
-                if (ignoreIfSeveralStores)
+                if (ignoreIfSeveralApplications)
                 {
                     var applicationService = EngineContext.Current.Resolve<IApplicationService>();
                     if (applicationService.GetAllApplications().Count >= 2)
@@ -103,13 +105,13 @@ namespace QuGo.Web.Framework
             });
         }
 
-        public static MvcHtmlString DeleteConfirmation<T>(this HtmlHelper<T> helper, string buttonsSelector) where T : BaseNopEntityModel
+        public static MvcHtmlString DeleteConfirmation<T>(this HtmlHelper<T> helper, string buttonsSelector) where T : BaseQuGoEntityModel
         {
             return DeleteConfirmation(helper, "", buttonsSelector);
         }
 
         public static MvcHtmlString DeleteConfirmation<T>(this HtmlHelper<T> helper, string actionName,
-            string buttonsSelector) where T : BaseNopEntityModel
+            string buttonsSelector) where T : BaseQuGoEntityModel
         {
             if (String.IsNullOrEmpty(actionName))
                 actionName = "Delete";
@@ -170,49 +172,49 @@ namespace QuGo.Web.Framework
             return MvcHtmlString.Create(window.ToString());
         }
 
-        public static MvcHtmlString OverrideStoreCheckboxFor<TModel, TValue>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString OverrideApplicationCheckboxFor<TModel, TValue>(this HtmlHelper<TModel> helper,
             Expression<Func<TModel, bool>> expression,
             Expression<Func<TModel, TValue>> forInputExpression,
-            int activeStoreScopeConfiguration)
+            int activeApplicationScopeConfiguration)
         {
             var dataInputIds = new List<string>();
             dataInputIds.Add(helper.FieldIdFor(forInputExpression));
-            return OverrideStoreCheckboxFor(helper, expression, activeStoreScopeConfiguration, null, dataInputIds.ToArray());
+            return OverrideApplicationCheckboxFor(helper, expression, activeApplicationScopeConfiguration, null, dataInputIds.ToArray());
         }
-        public static MvcHtmlString OverrideStoreCheckboxFor<TModel, TValue1, TValue2>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString OverrideApplicationCheckboxFor<TModel, TValue1, TValue2>(this HtmlHelper<TModel> helper,
             Expression<Func<TModel, bool>> expression,
             Expression<Func<TModel, TValue1>> forInputExpression1,
             Expression<Func<TModel, TValue2>> forInputExpression2,
-            int activeStoreScopeConfiguration)
+            int activeApplicationScopeConfiguration)
         {
             var dataInputIds = new List<string>();
             dataInputIds.Add(helper.FieldIdFor(forInputExpression1));
             dataInputIds.Add(helper.FieldIdFor(forInputExpression2));
-            return OverrideStoreCheckboxFor(helper, expression, activeStoreScopeConfiguration, null, dataInputIds.ToArray());
+            return OverrideApplicationCheckboxFor(helper, expression, activeApplicationScopeConfiguration, null, dataInputIds.ToArray());
         }
-        public static MvcHtmlString OverrideStoreCheckboxFor<TModel, TValue1, TValue2, TValue3>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString OverrideApplicationCheckboxFor<TModel, TValue1, TValue2, TValue3>(this HtmlHelper<TModel> helper,
             Expression<Func<TModel, bool>> expression,
             Expression<Func<TModel, TValue1>> forInputExpression1,
             Expression<Func<TModel, TValue2>> forInputExpression2,
             Expression<Func<TModel, TValue3>> forInputExpression3,
-            int activeStoreScopeConfiguration)
+            int activeApplicationScopeConfiguration)
         {
             var dataInputIds = new List<string>();
             dataInputIds.Add(helper.FieldIdFor(forInputExpression1));
             dataInputIds.Add(helper.FieldIdFor(forInputExpression2));
             dataInputIds.Add(helper.FieldIdFor(forInputExpression3));
-            return OverrideStoreCheckboxFor(helper, expression, activeStoreScopeConfiguration, null, dataInputIds.ToArray());
+            return OverrideApplicationCheckboxFor(helper, expression, activeApplicationScopeConfiguration, null, dataInputIds.ToArray());
         }
-        public static MvcHtmlString OverrideStoreCheckboxFor<TModel>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString OverrideApplicationCheckboxFor<TModel>(this HtmlHelper<TModel> helper,
             Expression<Func<TModel, bool>> expression,
             string parentContainer,
-            int activeStoreScopeConfiguration)
+            int activeApplicationScopeConfiguration)
         {
-            return OverrideStoreCheckboxFor(helper, expression, activeStoreScopeConfiguration, parentContainer);
+            return OverrideApplicationCheckboxFor(helper, expression, activeApplicationScopeConfiguration, parentContainer);
         }
-        private static MvcHtmlString OverrideStoreCheckboxFor<TModel>(this HtmlHelper<TModel> helper,
+        private static MvcHtmlString OverrideApplicationCheckboxFor<TModel>(this HtmlHelper<TModel> helper,
             Expression<Func<TModel, bool>> expression,
-            int activeStoreScopeConfiguration,
+            int activeApplicationScopeConfiguration,
             string parentContainer = null,
             params string[] datainputIds)
         {
@@ -220,10 +222,10 @@ namespace QuGo.Web.Framework
                 throw new ArgumentException("Specify at least one selector");
 
             var result = new StringBuilder();
-            if (activeStoreScopeConfiguration > 0)
+            if (activeApplicationScopeConfiguration > 0)
             {
-                //render only when a certain store is chosen
-                const string cssClass = "multi-store-override-option";
+                //render only when a certain application is chosen
+                const string cssClass = "multi-application-override-option";
                 string dataInputSelector = "";
                 if (!String.IsNullOrEmpty(parentContainer))
                 {
@@ -233,7 +235,7 @@ namespace QuGo.Web.Framework
                 {
                     dataInputSelector = "#" + String.Join(", #", datainputIds);
                 }
-                var onClick = string.Format("checkOverriddenStoreValue(this, '{0}')", dataInputSelector);
+                var onClick = string.Format("checkOverriddenApplicationValue(this, '{0}')", dataInputSelector);
                 result.Append(helper.CheckBoxFor(expression, new Dictionary<string, object>
                 {
                     { "class", cssClass },
@@ -335,7 +337,7 @@ namespace QuGo.Web.Framework
         }
 
         /// <summary>
-        /// Gets a selected tab name (used in admin area to store selected tab name)
+        /// Gets a selected tab name (used in admin area to application selected tab name)
         /// </summary>
         /// <returns>Name</returns>
         public static string GetSelectedTabName(this HtmlHelper helper)
@@ -343,7 +345,7 @@ namespace QuGo.Web.Framework
             //keep this method synchornized with
             //"SaveSelectedTab" method of \Administration\Controllers\BaseAdminController.cs
             var tabName = string.Empty;
-            const string dataKey = "nop.selected-tab-name";
+            const string dataKey = "qugo.selected-tab-name";
 
             if (helper.ViewData.ContainsKey(dataKey))
                 tabName = helper.ViewData[dataKey].ToString();
@@ -369,7 +371,7 @@ namespace QuGo.Web.Framework
             return MvcHtmlString.Create(builder.ToString());
         }
 
-        public static MvcHtmlString NopLabelFor<TModel, TValue>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString QuGoLabelFor<TModel, TValue>(this HtmlHelper<TModel> helper,
                 Expression<Func<TModel, TValue>> expression, bool displayHint = true)
         {
             var result = new StringBuilder();
@@ -379,9 +381,9 @@ namespace QuGo.Web.Framework
 
             result.Append(helper.LabelFor(expression, new { title = hintResource, @class = "control-label" }));
 
-            if (metadata.AdditionalValues.TryGetValue("NopResourceDisplayName", out value))
+            if (metadata.AdditionalValues.TryGetValue("QuGoResourceDisplayName", out value))
             {
-                var resourceDisplayName = value as NopResourceDisplayName;
+                var resourceDisplayName = value as QuGoResourceDisplayName;
                 if (resourceDisplayName != null && displayHint)
                 {
                     var langId = EngineContext.Current.Resolve<IWorkContext>().WorkingLanguage.Id;
@@ -401,7 +403,7 @@ namespace QuGo.Web.Framework
             return MvcHtmlString.Create(laberWrapper.ToString());
         }
 
-        public static MvcHtmlString NopEditorFor<TModel, TValue>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString QuGoEditorFor<TModel, TValue>(this HtmlHelper<TModel> helper,
             Expression<Func<TModel, TValue>> expression, string postfix = "",
             bool? renderFormControlClass = null, bool required = false)
         {
@@ -423,7 +425,7 @@ namespace QuGo.Web.Framework
             return MvcHtmlString.Create(result.ToString());
         }
 
-        public static MvcHtmlString NopDropDownList<TModel>(this HtmlHelper<TModel> helper, string name,
+        public static MvcHtmlString QuGoDropDownList<TModel>(this HtmlHelper<TModel> helper, string name,
             IEnumerable<SelectListItem> itemList, object htmlAttributes = null, 
             bool renderFormControlClass = true, bool required = false)
         {
@@ -443,7 +445,7 @@ namespace QuGo.Web.Framework
             return MvcHtmlString.Create(result.ToString());
         }
 
-        public static MvcHtmlString NopDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString QuGoDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> helper,
             Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> itemList,
             object htmlAttributes = null, bool renderFormControlClass = true, bool required = false)
         {
@@ -463,7 +465,7 @@ namespace QuGo.Web.Framework
             return MvcHtmlString.Create(result.ToString());
         }
 
-        public static MvcHtmlString NopTextAreaFor<TModel, TValue>(this HtmlHelper<TModel> helper,
+        public static MvcHtmlString QuGoTextAreaFor<TModel, TValue>(this HtmlHelper<TModel> helper,
             Expression<Func<TModel, TValue>> expression, object htmlAttributes = null,
             bool renderFormControlClass = true, int rows = 4, int columns = 20, bool required = false)
         {
@@ -484,7 +486,7 @@ namespace QuGo.Web.Framework
         }
 
 
-        public static MvcHtmlString NopDisplayFor<TModel, TValue>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TValue>> expression)
+        public static MvcHtmlString QuGoDisplayFor<TModel, TValue>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TValue>> expression)
         {
             var result = new TagBuilder("div");
             result.Attributes.Add("class", "form-text-row");
@@ -493,7 +495,7 @@ namespace QuGo.Web.Framework
             return MvcHtmlString.Create(result.ToString());
         }
 
-        public static MvcHtmlString NopDisplay<TModel>(this HtmlHelper<TModel> helper, string expression)
+        public static MvcHtmlString QuGoDisplay<TModel>(this HtmlHelper<TModel> helper, string expression)
         {
             var result = new TagBuilder("div");
             result.Attributes.Add("class", "form-text-row");

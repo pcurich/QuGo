@@ -1,7 +1,7 @@
 ﻿using System;
-using Nop.Core.Domain.Localization;
+using QuGo.Core.Domain.Localization;
 
-namespace Nop.Web.Framework.Localization
+namespace QuGo.Web.Framework.Localization
 {
 
     public static class LocalizedUrlExtenstions

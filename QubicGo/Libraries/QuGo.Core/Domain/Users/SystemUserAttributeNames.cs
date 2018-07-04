@@ -34,7 +34,7 @@ namespace QuGo.Core.Domain.Users
         public static string EmailRevalidationToken { get { return "EmailRevalidationToken"; } }
         public static string LastVisitedPage { get { return "LastVisitedPage"; } }
         public static string ImpersonatedUserId { get { return "ImpersonatedUserId"; } }
-        public static string AdminAreaStoreScopeConfiguration { get { return "AdminAreaStoreScopeConfiguration"; } }
+        public static string AdminAreaApplicationScopeConfiguration { get { return "AdminAreaApplicationScopeConfiguration"; } }
 
 
 

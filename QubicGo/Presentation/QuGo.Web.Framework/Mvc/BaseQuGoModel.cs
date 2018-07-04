@@ -40,7 +40,7 @@ namespace QuGo.Web.Framework.Mvc
     /// <summary>
     /// Base application entity model
     /// </summary>
-    public partial class BaseNopEntityModel : BaseQuGoModel
+    public partial class BaseQuGoEntityModel : BaseQuGoModel
     {
         public virtual int Id { get; set; }
     }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Web.Mvc;
 using Newtonsoft.Json;
-using Nop.Core;
+using QuGo.Core;
 
-namespace Nop.Web.Framework.Mvc
+namespace QuGo.Web.Framework.Mvc
 {
     public class NullJsonResult : JsonResult
     {

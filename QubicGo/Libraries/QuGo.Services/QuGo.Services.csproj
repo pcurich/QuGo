@@ -212,6 +212,10 @@
     <Compile Include="Tasks\Task.cs" />
     <Compile Include="Tasks\TaskManager.cs" />
     <Compile Include="Tasks\TaskThread.cs" />
+    <Compile Include="Topics\ITopicService.cs" />
+    <Compile Include="Topics\ITopicTemplateService.cs" />
+    <Compile Include="Topics\TopicService.cs" />
+    <Compile Include="Topics\TopicTemplateService.cs" />
     <Compile Include="Users\Cache\UserCacheEventConsumer.cs" />
     <Compile Include="Users\ChangePasswordRequest.cs" />
     <Compile Include="Users\ChangePasswordResult.cs" />

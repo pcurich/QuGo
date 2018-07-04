@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.ModelBinding;
+using QuGo.Core;
 
 namespace QuGo.Web.Framework.Mvc
 {
@@ -15,7 +16,7 @@ namespace QuGo.Web.Framework.Mvc
             foreach (var additionalValue in additionalValues)
             {
                 if (metadata.AdditionalValues.ContainsKey(additionalValue.Name))
-                    throw new QuGoException("There is already an attribute with the name of \"" + additionalValue.Name +
+                    throw new SysException("There is already an attribute with the name of \"" + additionalValue.Name +
                                            "\" on this model.");
                 metadata.AdditionalValues.Add(additionalValue.Name, additionalValue);
             }

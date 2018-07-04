@@ -1,6 +1,6 @@
-﻿namespace Nop.Web.Framework.Mvc
+﻿namespace QuGo.Web.Framework.Mvc
 {
-    public class DeleteConfirmationModel : BaseNopEntityModel
+    public class DeleteConfirmationModel : BaseQuGoEntityModel
     {
         public string ControllerName { get; set; }
         public string ActionName { get; set; }

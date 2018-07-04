@@ -2,7 +2,7 @@
 using System.Web.Mvc;
 using System.Xml;
 
-namespace Nop.Web.Framework.Mvc
+namespace QuGo.Web.Framework.Mvc
 {
     public class XmlDownloadResult : ActionResult
     {
